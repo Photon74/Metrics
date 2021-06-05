@@ -5,20 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MetricsManager.Controllers
+namespace MetricsAgent.Controllers
 {
     [Route("api/metrics/hdd")]
     [ApiController]
     public class HddMetricsController : ControllerBase
     {
-        [HttpGet("agent/{agentId}")]
-        public IActionResult GetMetricsFromAgent()
-        {
-            return Ok();
-        }
-
-        [HttpGet("cluster")]
-        public IActionResult GetMetricsAllCluster()
+        [HttpGet("left")]
+        public IActionResult GetMetrics()
         {
             return Ok();
         }

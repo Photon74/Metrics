@@ -5,22 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MetricsManager.Controllers
+namespace MetricsAgent.Controllers
 {
     [Route("api/metrics/ram")]
     [ApiController]
     public class RamMetricsController : ControllerBase
     {
-        [HttpGet("agent/{agentId}")]
-        public IActionResult GetMetricsFromAgent()
+        [HttpGet("available")]
+        public IActionResult GetMetrics()
         {
             return Ok();
         }
 
-        [HttpGet("cluster")]
-        public IActionResult GetMetricsAllCluster()
-        {
-            return Ok();
-        }
     }
 }
