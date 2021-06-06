@@ -11,8 +11,10 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class RamMetricsController : ControllerBase
     {
-        [HttpGet("available")]
-        public IActionResult GetMetrics()
+        [HttpGet("available/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetrics(
+            [FromRoute] TimeSpan fromTime,
+            [FromRoute] TimeSpan toTime)
         {
             return Ok();
         }

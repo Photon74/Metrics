@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManager", "MetricsManager\MetricsManager.csproj", "{D7C7369F-1923-46DD-846F-B02377C662E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsManager", "MetricsManager\MetricsManager.csproj", "{D7C7369F-1923-46DD-846F-B02377C662E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsAgent", "MetricsAgent\MetricsAgent.csproj", "{D7CA680F-D2E0-476A-A757-9B480D97BB7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsAgent", "MetricsAgent\MetricsAgent.csproj", "{D7CA680F-D2E0-476A-A757-9B480D97BB7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManagerTests", "MetricsManagerTests\MetricsManagerTests.csproj", "{B0DFBDBB-799C-4623-86DC-11D30192B4D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsAgentTests", "MetricsAgentTests\MetricsAgentTests.csproj", "{C83B5437-C7C4-4F0D-96D8-FEC80D067C23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{D7CA680F-D2E0-476A-A757-9B480D97BB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7CA680F-D2E0-476A-A757-9B480D97BB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7CA680F-D2E0-476A-A757-9B480D97BB7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0DFBDBB-799C-4623-86DC-11D30192B4D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0DFBDBB-799C-4623-86DC-11D30192B4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0DFBDBB-799C-4623-86DC-11D30192B4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0DFBDBB-799C-4623-86DC-11D30192B4D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C83B5437-C7C4-4F0D-96D8-FEC80D067C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C83B5437-C7C4-4F0D-96D8-FEC80D067C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C83B5437-C7C4-4F0D-96D8-FEC80D067C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C83B5437-C7C4-4F0D-96D8-FEC80D067C23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

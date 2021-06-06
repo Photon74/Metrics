@@ -21,7 +21,7 @@ namespace MetricsManager.Controllers
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsAllCluster(
+        public IActionResult GetMetricsFromAllCluster(
             [FromRoute] TimeSpan fromTime,
             [FromRoute] TimeSpan toTime)
         {

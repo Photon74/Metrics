@@ -9,5 +9,11 @@ namespace MetricsManager
     {
         public int agentId { get; set; }
         public Uri AgentAddress { get; set; }
+
+        public AgentInfo(int agentId, Uri agentAddress)
+        {
+            this.agentId = agentId;
+            AgentAddress = agentAddress;
+        }
     }
 }
