@@ -13,8 +13,8 @@ namespace MetricsAgent.Controllers
     {
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetrics(
-            [FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime)
+            [FromRoute] DateTimeOffset fromTime,
+            [FromRoute] DateTimeOffset toTime)
         {
             return Ok();
         }

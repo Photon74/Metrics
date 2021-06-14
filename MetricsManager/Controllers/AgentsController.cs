@@ -11,11 +11,8 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class AgentsController : ControllerBase
     {
-        private readonly AgentsHolder _holder;
-
-        public AgentsController(AgentsHolder holder)
+        public AgentsController()
         {
-            _holder = holder;
         }
 
         [HttpPost("register")]
@@ -39,7 +36,7 @@ namespace MetricsManager.Controllers
         [HttpGet("get")]
         public IActionResult GetAgentsList()
         {
-            return Ok(_holder.Agents);
+            return Ok();
         }
     }
 }

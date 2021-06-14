@@ -12,8 +12,7 @@ namespace MetricsManagerTests
 
         public AgentsControllerTests()
         {
-            AgentsHolder holder = new AgentsHolder();
-            controller = new AgentsController(holder);
+            controller = new AgentsController();
         }
 
         [Fact]
