@@ -11,11 +11,8 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class AgentsController : ControllerBase
     {
-        private readonly AgentsHolder _holder;
-
-        public AgentsController(AgentsHolder holder)
+        public AgentsController()
         {
-            _holder = holder;
         }
 
         [HttpPost("register")]
@@ -32,6 +29,12 @@ namespace MetricsManager.Controllers
 
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
+        {
+            return Ok();
+        }
+
+        [HttpGet("get")]
+        public IActionResult GetAgentsList()
         {
             return Ok();
         }
