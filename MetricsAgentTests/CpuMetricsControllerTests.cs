@@ -28,7 +28,7 @@ namespace MetricsAgentTests
             //Arrange
             mockRepository.Setup(repository =>
                 repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()))
-                .Returns(new List<CpuMetric>()).Verifiable();
+                .Returns(new List<CpuMetrics>()).Verifiable();
 
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
@@ -37,7 +37,8 @@ namespace MetricsAgentTests
             var result = controller.GetMetrics(fromTime, toTime);
 
             //Assert
-            mockRepository.Verify(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
+            mockRepository.Verify(repository =>
+                repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
     }
 }

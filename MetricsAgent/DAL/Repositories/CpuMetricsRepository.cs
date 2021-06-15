@@ -6,7 +6,7 @@ using System.Data.SQLite;
 
 namespace MetricsAgent.DAL.Repositories
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetric>
+    public interface ICpuMetricsRepository : IRepository<CpuMetrics>
     {
     }
 
@@ -14,7 +14,7 @@ namespace MetricsAgent.DAL.Repositories
     {
         private const string ConnectionString = ConnectionStringToDataBase.ConnectionString;
 
-        public void Create(CpuMetric item)
+        public void Create(CpuMetrics item)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
@@ -28,7 +28,7 @@ namespace MetricsAgent.DAL.Repositories
             command.ExecuteNonQuery();
         }
 
-        public IList<CpuMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
+        public IList<CpuMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
@@ -40,13 +40,13 @@ namespace MetricsAgent.DAL.Repositories
             command.Parameters.AddWithValue("@toTime", toTime.ToUnixTimeSeconds());
             command.Prepare();
 
-            var result = new List<CpuMetric>();
+            var result = new List<CpuMetrics>();
 
             using (SQLiteDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    result.Add(new CpuMetric
+                    result.Add(new CpuMetrics
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
