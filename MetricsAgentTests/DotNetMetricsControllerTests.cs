@@ -1,5 +1,8 @@
 ﻿using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using Xunit;
 
@@ -8,10 +11,14 @@ namespace MetricsAgentTests
     public class DotNetMetricsControllerTests
     {
         private DotNetMetricsController controller;
+        private Mock<ILogger<DotNetMetricsController>> mockLogger;
+        private Mock<IDotNetMetricsRepository> mockRepository;
 
         public DotNetMetricsControllerTests()
         {
-            controller = new DotNetMetricsController();
+            mockLogger = new Mock<ILogger<DotNetMetricsController>>();
+            mockRepository = new Mock<IDotNetMetricsRepository>();
+            controller = new DotNetMetricsController(mockLogger.Object);
         }
 
         [Fact]
@@ -27,6 +34,5 @@ namespace MetricsAgentTests
             //Assert
             Assert.IsAssignableFrom<IActionResult>(result);
         }
-
     }
 }
