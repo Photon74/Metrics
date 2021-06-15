@@ -1,4 +1,5 @@
 ﻿using MetricsAgent.Controllers.Responses;
+using MetricsAgent.DAL.Models;
 using MetricsAgent.DAL.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,7 @@ namespace MetricsAgent.Controllers
     public class CpuMetricsController : ControllerBase
     {
         private readonly ILogger<CpuMetricsController> _logger;
-        private ICpuMetricsRepository _repository;
+        private readonly ICpuMetricsRepository _repository;
 
         public CpuMetricsController(ILogger<CpuMetricsController> logger, ICpuMetricsRepository repository)
         {
@@ -30,7 +31,7 @@ namespace MetricsAgent.Controllers
 
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
-            var response = new ByTimePeriodCpuMetricsResponse()
+            var response = new CpuMetricsResponse()
             {
                 Metrics = new List<CpuMetricDto>()
             };
