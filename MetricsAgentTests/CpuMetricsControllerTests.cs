@@ -1,6 +1,10 @@
 using MetricsAgent.Controllers;
-using Microsoft.AspNetCore.Mvc;
+using MetricsAgent.DAL.Models;
+using MetricsAgent.DAL.Repositories;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace MetricsAgentTests
@@ -8,16 +12,24 @@ namespace MetricsAgentTests
     public class CpuMetricsControllerTests
     {
         private CpuMetricsController controller;
+        private Mock<ILogger<CpuMetricsController>> mockLogger;
+        private Mock<ICpuMetricsRepository> mockRepository;
 
         public CpuMetricsControllerTests()
         {
-            controller = new CpuMetricsController();
+            mockLogger = new Mock<ILogger<CpuMetricsController>>();
+            mockRepository = new Mock<ICpuMetricsRepository>();
+            controller = new CpuMetricsController(mockLogger.Object, mockRepository.Object);
         }
 
         [Fact]
         public void GetMetricst_ReturnOk()
         {
             //Arrange
+            mockRepository.Setup(repository =>
+                repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()))
+                .Returns(new List<CpuMetrics>()).Verifiable();
+
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
@@ -25,7 +37,8 @@ namespace MetricsAgentTests
             var result = controller.GetMetrics(fromTime, toTime);
 
             //Assert
-            Assert.IsAssignableFrom<IActionResult>(result);
+            mockRepository.Verify(repository =>
+                repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
     }
 }
