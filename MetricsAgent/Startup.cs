@@ -1,3 +1,4 @@
+using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace MetricsAgent
             services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
             services.AddScoped<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
+            services.AddSingleton<IDBConnectionManager, SQLiteConnectionManager>();
         }
 
         private void ConfigureSqlLiteConnection()

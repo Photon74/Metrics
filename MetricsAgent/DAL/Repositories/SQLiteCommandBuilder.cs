@@ -10,6 +10,8 @@ namespace MetricsAgent.DAL.Repositories
         {
             CommandString = new StringBuilder();
             CommandString.Append($"INSERT INTO {item}(value, time) VALUES(@value, @time)");
+            //command.Parameters.AddWithValue("@value", item.Value);
+            //command.Parameters.AddWithValue("@time", item.Time);
 
             return CommandString.ToString();
         }

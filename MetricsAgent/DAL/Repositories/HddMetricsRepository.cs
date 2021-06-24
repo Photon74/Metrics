@@ -12,14 +12,16 @@ namespace MetricsAgent.DAL.Repositories
 
     public class HddMetricsRepository : IHddMetricsRepository
     {
-        private const string ConnectionString = ConnectionStringToDataBase.ConnectionString;
+        private readonly IDBConnectionManager _connectionManager;
+
+        public HddMetricsRepository(IDBConnectionManager connectionManager)
+        {
+            _connectionManager = connectionManager;
+        }
 
         public void Create(HddMetrics item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
-
-            using var command = new SQLiteCommand(connection);
+            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
 
             command.CommandText = "INSERT INTO hddmetrics(value, time) VALUES(@value, @time)";
             command.Parameters.AddWithValue("@value", item.Value);
@@ -30,10 +32,7 @@ namespace MetricsAgent.DAL.Repositories
 
         public IList<HddMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
-
-            using var command = new SQLiteCommand(connection);
+            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
 
             command.CommandText = "SELECT * FROM hddmetrics WHERE time BETWEEN @fromTime AND @toTime";
             command.Parameters.AddWithValue("@fromTime", fromTime.ToUnixTimeSeconds());

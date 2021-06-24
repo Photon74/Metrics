@@ -12,28 +12,16 @@ namespace MetricsAgent.DAL.Repositories
 
     public class RamMetricsRepository : IRamMetricsRepository
     {
-        private const string ConnectionString = ConnectionStringToDataBase.ConnectionString;
+        private readonly IDBConnectionManager _connectionManager;
 
-        public void Create(RamMetrics item)
+        public RamMetricsRepository(IDBConnectionManager connectionManager)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
-
-            using var command = new SQLiteCommand(connection);
-
-            command.CommandText = "INSERT INTO cpumetrics(value, time) VALUES(@value, @time)";
-            command.Parameters.AddWithValue("@value", item.Value);
-            command.Parameters.AddWithValue("@time", item.Time);
-            command.Prepare();
-            command.ExecuteNonQuery();
+            _connectionManager = connectionManager;
         }
 
         public IList<RamMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
-
-            using var command = new SQLiteCommand(connection);
+            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
 
             command.CommandText = "SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime";
             command.Parameters.AddWithValue("@fromTime", fromTime.ToUnixTimeSeconds());
@@ -55,6 +43,17 @@ namespace MetricsAgent.DAL.Repositories
                 }
             }
             return result;
+        }
+
+        public void Create(RamMetrics item)
+        {
+            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
+
+            command.CommandText = "INSERT INTO cpumetrics(value, time) VALUES(@value, @time)";
+            command.Parameters.AddWithValue("@value", item.Value);
+            command.Parameters.AddWithValue("@time", item.Time);
+            command.Prepare();
+            command.ExecuteNonQuery();
         }
     }
 }
