@@ -12,16 +12,16 @@ namespace MetricsAgent.DAL.Repositories
 
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private readonly IDBConnectionManager _connectionManager;
+        private readonly IDBConnectionManager _connection;
 
-        public CpuMetricsRepository(IDBConnectionManager connectionManager)
+        public CpuMetricsRepository(IDBConnectionManager connection)
         {
-            _connectionManager = connectionManager;
+            _connection = connection;
         }
 
         public void Create(CpuMetrics item)
         {
-            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
+            using var command = new SQLiteCommand(_connection.CreateOpenedConnection() as SQLiteConnection);
 
             command.CommandText = "INSERT INTO cpumetrics(value, time) VALUES(@value, @time)";
             command.Parameters.AddWithValue("@value", item.Value);
@@ -32,7 +32,7 @@ namespace MetricsAgent.DAL.Repositories
 
         public IList<CpuMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
+            using var command = new SQLiteCommand((SQLiteConnection)_connection.CreateOpenedConnection());
 
             command.CommandText = "SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime";
             command.Parameters.AddWithValue("@fromTime", fromTime.ToUnixTimeSeconds());

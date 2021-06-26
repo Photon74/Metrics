@@ -1,5 +1,6 @@
 ﻿using MetricsAgent.DAL.Interfaces;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 
 namespace MetricsAgent
@@ -10,7 +11,7 @@ namespace MetricsAgent
 
         public IDbConnection CreateOpenedConnection()
         {
-            var connection = new SQLiteConnection(ConnectionString);
+            SQLiteConnection connection = new SQLiteConnection(ConnectionString);
             connection.Open();
 
             return connection;
