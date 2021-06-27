@@ -1,7 +1,6 @@
-﻿using MetricsAgent.DAL.Interfaces;
-using MetricsAgent.DAL.Models;
+﻿using MetricsAgent.DAL.Models;
 
-namespace MetricsAgent.DAL.Repositories
+namespace MetricsAgent.DAL.Interfaces
 {
     public interface ICpuMetricsRepository : IRepository<CpuMetrics>
     {

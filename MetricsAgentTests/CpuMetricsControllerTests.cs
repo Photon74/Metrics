@@ -1,6 +1,6 @@
 using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
-using MetricsAgent.DAL.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;

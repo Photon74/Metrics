@@ -1,5 +1,6 @@
-﻿using MetricsAgent.Controllers.Responses;
-using MetricsAgent.DAL.Repositories;
+﻿using MetricsAgent.Controllers.Models;
+using MetricsAgent.Controllers.Responses;
+using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
