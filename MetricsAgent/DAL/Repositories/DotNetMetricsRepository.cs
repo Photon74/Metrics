@@ -6,10 +6,6 @@ using System.Data.SQLite;
 
 namespace MetricsAgent.DAL.Repositories
 {
-    public interface IDotNetMetricsRepository : IRepository<DotNetMetrics>
-    {
-    }
-
     public class DotNetMetricsRepository : IDotNetMetricsRepository
     {
         private readonly IDBConnectionManager _connectionManager;

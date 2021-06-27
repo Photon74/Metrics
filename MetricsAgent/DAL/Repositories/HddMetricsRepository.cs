@@ -6,10 +6,6 @@ using System.Data.SQLite;
 
 namespace MetricsAgent.DAL.Repositories
 {
-    public interface IHddMetricsRepository : IRepository<HddMetrics>
-    {
-    }
-
     public class HddMetricsRepository : IHddMetricsRepository
     {
         private readonly IDBConnectionManager _connectionManager;

@@ -6,10 +6,6 @@ using System.Data.SQLite;
 
 namespace MetricsAgent.DAL.Repositories
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetrics>
-    {
-    }
-
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
         private readonly IDBConnectionManager _connection;
