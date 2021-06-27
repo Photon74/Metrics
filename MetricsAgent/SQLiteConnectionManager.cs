@@ -1,6 +1,5 @@
 ﻿using MetricsAgent.DAL.Interfaces;
 using System.Data;
-using System.Data.Common;
 using System.Data.SQLite;
 
 namespace MetricsAgent
