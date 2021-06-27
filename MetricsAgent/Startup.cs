@@ -33,9 +33,7 @@ namespace MetricsAgent
 
         private void ConfigureSqlLiteConnection()
         {
-            const string connectionString = ConnectionStringToDataBase.ConnectionString;
-            var connection = new SQLiteConnection(connectionString);
-            connection.Open();
+            var connection = new SQLiteConnectionManager().CreateOpenedConnection() as SQLiteConnection;
             PrepareSchema(connection);
         }
 
