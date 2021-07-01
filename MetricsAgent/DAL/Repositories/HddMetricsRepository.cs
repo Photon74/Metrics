@@ -1,55 +1,44 @@
-﻿using MetricsAgent.DAL.Interfaces;
+﻿using Dapper;
+using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 
 namespace MetricsAgent.DAL.Repositories
 {
     public class HddMetricsRepository : IHddMetricsRepository
     {
-        private readonly IDBConnectionManager _connectionManager;
+        private readonly IDBConnectionManager _connection;
 
-        public HddMetricsRepository(IDBConnectionManager connectionManager)
+        public HddMetricsRepository(IDBConnectionManager connection)
         {
-            _connectionManager = connectionManager;
+            _connection = connection;
+            SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public void Create(HddMetrics item)
         {
-            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
-
-            command.CommandText = "INSERT INTO hddmetrics(value, time) VALUES(@value, @time)";
-            command.Parameters.AddWithValue("@value", item.Value);
-            command.Parameters.AddWithValue("@time", item.Time);
-            command.Prepare();
-            command.ExecuteNonQuery();
+            using var connection = _connection.CreateOpenedConnection();
+            connection.Execute("INSERT INTO cpumetrics(value, time) VALUES(@value, @time)",
+                new
+                {
+                    value = item.Value,
+                    time = item.Time
+                });
         }
 
         public IList<HddMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var command = new SQLiteCommand((SQLiteConnection)_connectionManager.CreateOpenedConnection());
+            using var connection = _connection.CreateOpenedConnection();
 
-            command.CommandText = "SELECT * FROM hddmetrics WHERE time BETWEEN @fromTime AND @toTime";
-            command.Parameters.AddWithValue("@fromTime", fromTime.ToUnixTimeSeconds());
-            command.Parameters.AddWithValue("@toTime", toTime.ToUnixTimeSeconds());
-            command.Prepare();
-
-            var result = new List<HddMetrics>();
-
-            using (SQLiteDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
+            return connection.Query<HddMetrics>("SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
+                new
                 {
-                    result.Add(new HddMetrics
-                    {
-                        Id = reader.GetInt32(0),
-                        Value = reader.GetInt32(1),
-                        Time = reader.GetInt64(2)
-                    });
-                }
-            }
-            return result;
+                    fromTime = fromTime.ToUnixTimeSeconds(),
+                    toTime = toTime.ToUnixTimeSeconds()
+                }).ToList();
         }
     }
 }
