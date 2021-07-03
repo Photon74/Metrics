@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MetricsAgent.Controllers.Responses
+namespace MetricsAgent.Controllers.Models
 {
     public class HddMetricDto
     {

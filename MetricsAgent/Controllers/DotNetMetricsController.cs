@@ -1,4 +1,5 @@
-﻿using MetricsAgent.Controllers.Models;
+﻿using AutoMapper;
+using MetricsAgent.Controllers.Models;
 using MetricsAgent.Controllers.Responses;
 using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +15,21 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<DotNetMetricsController> _logger;
         private readonly IDotNetMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
-        public DotNetMetricsController(ILogger<DotNetMetricsController> logger, IDotNetMetricsRepository repository)
+        public DotNetMetricsController(ILogger<DotNetMetricsController> logger,
+                                       IDotNetMetricsRepository repository,
+                                       IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog is built into DotNetMetricsController");
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetrics(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        public IActionResult GetMetrics([FromRoute] DateTimeOffset fromTime,
+                                        [FromRoute] DateTimeOffset toTime)
         {
             _logger.LogInformation($"Get DotNet Metrics: fromTime - {fromTime}, toTime - {toTime}");
 
@@ -38,12 +42,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new DotNetMetricDto
-                {
-                    Id = metric.Id,
-                    Value = metric.Value,
-                    Time = DateTimeOffset.FromUnixTimeSeconds(metric.Time)
-                });
+                response.Metrics.Add(_mapper.Map<DotNetMetricDto>(metric));
             }
 
             return Ok(response);

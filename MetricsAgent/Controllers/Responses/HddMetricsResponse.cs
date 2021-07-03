@@ -1,5 +1,4 @@
-﻿using MetricsAgent.Controllers.Responses;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers.Models
 {

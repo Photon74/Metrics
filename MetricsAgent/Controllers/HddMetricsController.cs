@@ -1,5 +1,5 @@
-﻿using MetricsAgent.Controllers.Models;
-using MetricsAgent.Controllers.Responses;
+﻿using AutoMapper;
+using MetricsAgent.Controllers.Models;
 using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,18 +14,21 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<HddMetricsController> _logger;
         private readonly IHddMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
-        public HddMetricsController(ILogger<HddMetricsController> logger, IHddMetricsRepository repository)
+        public HddMetricsController(ILogger<HddMetricsController> logger,
+                                    IHddMetricsRepository repository,
+                                    IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog is built into HddMetricsController");
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("left/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetrics(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        public IActionResult GetMetrics([FromRoute] DateTimeOffset fromTime,
+                                        [FromRoute] DateTimeOffset toTime)
         {
             _logger.LogInformation($"Get Hdd Metrics: fromTime - {fromTime}, toTime - {toTime}");
 
@@ -38,12 +41,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new HddMetricDto
-                {
-                    Id = metric.Id,
-                    Value = metric.Value,
-                    Time = DateTimeOffset.FromUnixTimeSeconds(metric.Time)
-                });
+                response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
             }
 
             return Ok(response);

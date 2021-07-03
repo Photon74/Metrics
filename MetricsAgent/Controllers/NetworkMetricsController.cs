@@ -1,5 +1,5 @@
-﻿using MetricsAgent.Controllers.Models;
-using MetricsAgent.Controllers.Responses;
+﻿using AutoMapper;
+using MetricsAgent.Controllers.Models;
 using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,18 +14,21 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<NetworkMetricsController> _logger;
         private readonly INetworkMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
-        public NetworkMetricsController(ILogger<NetworkMetricsController> logger, INetworkMetricsRepository repository)
+        public NetworkMetricsController(ILogger<NetworkMetricsController> logger,
+                                        INetworkMetricsRepository repository,
+                                        IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog is built into CpuMetricsController");
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetrics(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        public IActionResult GetMetrics([FromRoute] DateTimeOffset fromTime,
+                                        [FromRoute] DateTimeOffset toTime)
         {
             _logger.LogInformation($"Get Network Metrics: fromTime - {fromTime}, toTime - {toTime}");
 
@@ -38,12 +41,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new NetworkMetricDto
-                {
-                    Id = metric.Id,
-                    Value = metric.Value,
-                    Time = DateTimeOffset.FromUnixTimeSeconds(metric.Time)
-                });
+                response.Metrics.Add(_mapper.Map<NetworkMetricDto>(metric));
             }
 
             return Ok(response);
