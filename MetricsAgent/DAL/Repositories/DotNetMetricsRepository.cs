@@ -3,8 +3,6 @@ using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.SQLite;
 using System.Linq;
 
 namespace MetricsAgent.DAL.Repositories
@@ -20,7 +18,7 @@ namespace MetricsAgent.DAL.Repositories
         }
 
         public void Create(DotNetMetrics item)
-{
+        {
             using var connection = _connection.CreateOpenedConnection();
             connection.Execute("INSERT INTO cpumetrics(value, time) VALUES(@value, @time)",
                 new

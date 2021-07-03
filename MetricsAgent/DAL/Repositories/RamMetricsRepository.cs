@@ -3,7 +3,6 @@ using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 
 namespace MetricsAgent.DAL.Repositories

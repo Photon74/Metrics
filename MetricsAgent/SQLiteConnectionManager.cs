@@ -6,7 +6,7 @@ namespace MetricsAgent
 {
     public class SQLiteConnectionManager : IDBConnectionManager
     {
-        private string ConnectionString => "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100";
+        public string ConnectionString => "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100";
 
         public IDbConnection CreateOpenedConnection()
         {
