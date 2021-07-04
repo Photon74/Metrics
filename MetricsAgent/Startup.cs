@@ -1,6 +1,8 @@
 using AutoMapper;
+using MediatR;
 using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Repositories;
+using MetricsAgent.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,16 +28,15 @@ namespace MetricsAgent
 
             ConfigureSqlLiteConnection();
             services.AddControllers();
-
+            services.AddMediatR(typeof(Startup));
             services.AddSingleton(mapper);
+
             services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddScoped<IDotNetMetricsRepository, DotNetMetricsRepository>();
             services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
             services.AddScoped<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
             services.AddSingleton<IDBConnectionManager, SQLiteConnectionManager>();
-
-
         }
 
         private void ConfigureSqlLiteConnection()

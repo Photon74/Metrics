@@ -20,7 +20,7 @@ namespace MetricsAgent.DAL.Repositories
         public void Create(HddMetrics item)
         {
             using var connection = _connection.CreateOpenedConnection();
-            connection.Execute("INSERT INTO cpumetrics(value, time) VALUES(@value, @time)",
+            connection.Execute("INSERT INTO hddmetrics(value, time) VALUES(@value, @time)",
                 new
                 {
                     value = item.Value,
@@ -32,7 +32,7 @@ namespace MetricsAgent.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.Query<HddMetrics>("SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
+            return connection.Query<HddMetrics>("SELECT * FROM hddmetrics WHERE time BETWEEN @fromTime AND @toTime",
                 new
                 {
                     fromTime = fromTime.ToUnixTimeSeconds(),
