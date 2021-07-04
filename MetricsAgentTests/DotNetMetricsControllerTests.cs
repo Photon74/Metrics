@@ -41,9 +41,6 @@ namespace MetricsAgentTests
                 repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()))
                 .Returns(new List<DotNetMetrics>()).Verifiable();
 
-            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
-            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
-
             //Act
             var result = _handler.Handle(_dateTimeRange, CancellationToken.None);
 
