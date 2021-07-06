@@ -9,7 +9,7 @@ namespace MetricsAgent.Mapper
                                       DateTimeOffset destination,
                                       ResolutionContext context)
         {
-            return DateTimeOffset.FromUnixTimeMilliseconds(source);
+            return DateTimeOffset.FromUnixTimeSeconds(source);
         }
     }
 }
