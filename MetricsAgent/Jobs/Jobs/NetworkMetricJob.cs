@@ -21,7 +21,11 @@ namespace MetricsAgent.Jobs.Jobs
             var networkUsageInBytes = Convert.ToInt32(_networkCounter.NextValue());
             var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-            _repository.Create(new NetworkMetrics { Time = time, Value = networkUsageInBytes });
+            _repository.Create(new NetworkMetrics
+            {
+                Time = time,
+                Value = networkUsageInBytes
+            });
 
             return Task.CompletedTask;
         }
