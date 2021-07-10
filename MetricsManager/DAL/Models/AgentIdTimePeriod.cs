@@ -2,7 +2,7 @@
 
 namespace MetricsManager.DAL.Models
 {
-    public class AgentTimePeriod
+    public class AgentIdTimePeriod
     {
         public int AgentId { get; set; }
         public DateTimeOffset FromTime { get; set; }

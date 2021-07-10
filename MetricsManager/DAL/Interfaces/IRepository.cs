@@ -6,7 +6,7 @@ namespace MetricsManager.DAL.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        IList<T> GetByTimePeriodFromAgent(AgentTimePeriod period);
+        IList<T> GetByTimePeriodFromAgent(AgentIdTimePeriod period);
         IList<T> GetByTimePeriod(TimePeriod period);
         DateTimeOffset GetLastDate(int agentId);
         void Create(T item);

@@ -7,21 +7,22 @@ using System.Linq;
 
 namespace MetricsManager.DAL.Repositories
 {
-    public class CpuMetricsRepository : ICpuMetricsRepository
+    public class NetworkMetricsRepository : INetworkMetricsRepository
     {
         private readonly IDBConnectionManager _connection;
 
-        public CpuMetricsRepository(IDBConnectionManager connection)
+        public NetworkMetricsRepository(IDBConnectionManager connection)
         {
             _connection = connection;
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
-        public void Create(CpuMetrics item)
+        public void Create(NetworkMetrics item)
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            connection.Execute("INSERT INTO cpumetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
+            connection.Execute(
+                "INSERT INTO Networkmetrics(value, time, agentId) VALUES(@value, @time, @agentId",
                 (
                     value: item.Value,
                     time: item.Time,
@@ -29,28 +30,28 @@ namespace MetricsManager.DAL.Repositories
                 ));
         }
 
-        public IList<CpuMetrics> GetByTimePeriod(TimePeriod period)
+        public IList<NetworkMetrics> GetByTimePeriod(TimePeriod period)
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.Query<CpuMetrics>(
-                "SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
+            return connection.Query<NetworkMetrics>(
+                "SELECT * FROM networkmetrics WHERE time BETWEEN @fromTime AND @toTime",
                 (
-                    fromTime: period.FromTime.ToUnixTimeSeconds(),
-                    toTime: period.ToTime.ToUnixTimeSeconds()
+                    fromTime: period.FromTime,
+                    toTime: period.ToTime
                 )).ToList();
         }
 
-        public IList<CpuMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
+        public IList<NetworkMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.Query<CpuMetrics>(
-                "SELECT * FROM cpumetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
+            return connection.Query<NetworkMetrics>(
+                "SELECT * FROM networkmetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
                 (
                     agentId: period.AgentId,
-                    fromTime: period.FromTime.ToUnixTimeSeconds(),
-                    toTime: period.ToTime.ToUnixTimeSeconds()
+                    fromTime: period.FromTime,
+                    toTime: period.ToTime
                 )).ToList();
         }
 
@@ -58,7 +59,7 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.QuerySingle<DateTimeOffset>("Select isnull(max(time),0) from cpumetrics");
+            return connection.QuerySingle<DateTimeOffset>("Select isnull(max(time),0) from networkmetrics");
         }
     }
 }

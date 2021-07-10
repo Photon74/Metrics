@@ -25,6 +25,11 @@ namespace MetricsManager
             services.AddSingleton<AgentsHolder>();
 
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
+            services.AddSingleton<IHddMetricsRepository, HddMetricsRepository>();
+            services.AddSingleton<IRamMetricsRepository, RamMetricsRepository>();
+            services.AddSingleton<IDotNetMetricsRepository, DotNetMetricsRepository>();
+            services.AddSingleton<INetworkMetricsRepository, NetworkMetricsRepository>();
+            services.AddSingleton<IAgentRepository, AgentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
