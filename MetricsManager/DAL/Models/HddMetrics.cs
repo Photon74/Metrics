@@ -1,4 +1,4 @@
-﻿namespace MetricsAgent.DAL.Models
+﻿namespace MetricsManager.DAL.Models
 {
     public class HddMetrics
     {

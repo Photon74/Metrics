@@ -32,5 +32,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mapper\" />
+  </ItemGroup>
+
 
 </Project>

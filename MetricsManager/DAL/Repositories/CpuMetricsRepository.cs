@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using MetricsAgent.DAL.Interfaces;
-using MetricsAgent.DAL.Models;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
 using System;
