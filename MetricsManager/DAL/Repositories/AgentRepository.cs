@@ -1,10 +1,8 @@
 ﻿using Dapper;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsManager.DAL.Repositories
 {
@@ -53,7 +51,7 @@ namespace MetricsManager.DAL.Repositories
 
         public void RemoveAgent(int id)
         {
-           using var connection = _connection.CreateOpenedConnection();
+            using var connection = _connection.CreateOpenedConnection();
 
             connection.Execute("DELETE FROM agents WHERE agentId = @agentId", id);
         }

@@ -1,3 +1,4 @@
+using MetricsManager.Client;
 using MetricsManager.Controllers.Models;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Repositories;
@@ -6,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
+using System;
 
 namespace MetricsManager
 {
@@ -22,6 +25,9 @@ namespace MetricsManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
+                    .AddTransientHttpErrorPolicy(p =>
+                    p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
             services.AddSingleton<AgentsHolder>();
 
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();

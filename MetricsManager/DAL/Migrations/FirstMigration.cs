@@ -2,6 +2,7 @@
 
 namespace MetricsManager.DAL.Migrations
 {
+    [Migration(1)]
     public class FirstMigration : Migration
     {
         public override void Down()
