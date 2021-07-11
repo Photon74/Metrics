@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MetricsManager.DAL.Interfaces
 {
-    interface IAgentRepository
+    public interface IAgentRepository
     {
         IList<Agent> GetAllAgents();
         void RegisterAgent(Agent agent);

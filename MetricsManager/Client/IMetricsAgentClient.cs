@@ -3,7 +3,7 @@ using MetricsManager.Client.Responses;
 
 namespace MetricsManager.Client
 {
-    interface IMetricsAgentClient
+    public interface IMetricsAgentClient
     {
         CpuMetricsResponse GetCpuMetrics(CpuMetricsRequest request);
         RamMetricsResponse GetRamMetrics(RamMetricsRequest request);

@@ -33,7 +33,7 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.Query<Agent>("SELECT * FROM agents").ToList();
+            return connection.Query<Agent>("SELECT * FROM agents WHERE enabled = true").ToList();
         }
 
         public void RegisterAgent(Agent agent)
