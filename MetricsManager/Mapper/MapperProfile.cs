@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MetricsManager.Client.Models;
+using MetricsManager.Controllers.Models;
 using MetricsManager.DAL.Models;
 using System;
 
@@ -9,6 +10,8 @@ namespace MetricsManager.Mapper
     {
         public MapperProfile()
         {
+            CreateMap<AgentInfo, Agent>();
+            CreateMap<Agent, AgentInfo>();
             CreateMap<CpuMetrics, CpuMetricDto>();
             CreateMap<DotNetMetrics, DotNetMetricDto>();
             CreateMap<HddMetrics, HddMetricDto>();

@@ -17,6 +17,7 @@ using MetricsManager.Quartz;
 using AutoMapper;
 using MetricsManager.Mapper;
 using FluentMigrator.Runner;
+using MetricsManager.Quartz.Jobs;
 
 namespace MetricsManager
 {
@@ -32,9 +33,20 @@ namespace MetricsManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddFluentMigratorCore()
+                    .ConfigureRunner(rb => rb
+                    .AddSQLite()
+                    .WithGlobalConnectionString(new SQLiteConnectionManager().ConnectionString)
+                    .ScanIn(typeof(Startup).Assembly).For.Migrations())
+                    .AddLogging(lb => lb
+                    .AddFluentMigratorConsole());
+
             services.AddControllers();
-            services.AddSingleton<AgentsHolder>();
+            //services.AddSingleton<AgentsHolder>();
             services.AddMediatR(typeof(Startup));
+
+            var mapper = new MapperConfiguration(mapper => mapper.AddProfile(new MapperProfile())).CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
                     .AddTransientHttpErrorPolicy(p => p
@@ -44,6 +56,32 @@ namespace MetricsManager
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
+            services.AddSingleton<CpuMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(CpuMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<RamMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(RamMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<HddMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(HddMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<NetworkMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<DotNetMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<IDBConnectionManager, SQLiteConnectionManager>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSingleton<IHddMetricsRepository, HddMetricsRepository>();
             services.AddSingleton<IRamMetricsRepository, RamMetricsRepository>();
@@ -51,16 +89,7 @@ namespace MetricsManager
             services.AddSingleton<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddSingleton<IAgentRepository, AgentRepository>();
 
-            var mapper = new MapperConfiguration(mapper => mapper.AddProfile(new MapperProfile())).CreateMapper();
-            services.AddSingleton(mapper);
 
-            services.AddFluentMigratorCore()
-                    .ConfigureRunner(rb => rb
-                    .AddSQLite()
-                    .WithGlobalConnectionString(new SQLiteConnectionManager().ConnectionString)
-                    .ScanIn(typeof(Startup).Assembly).For.Migrations())
-                    .AddLogging(lb => lb
-                    .AddFluentMigratorConsole());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

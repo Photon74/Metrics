@@ -32,8 +32,8 @@ namespace MetricsManager.DAL.Repositories
         public IList<Agent> GetAllAgents()
         {
             using var connection = _connection.CreateOpenedConnection();
-
-            return connection.Query<Agent>("SELECT * FROM agents WHERE enabled = true").ToList();
+            var res = connection.Query<Agent>("SELECT * FROM agents WHERE enabled = 1").ToList();
+            return res;
         }
 
         public void RegisterAgent(Agent agent)
@@ -42,11 +42,12 @@ namespace MetricsManager.DAL.Repositories
 
             connection.Execute(
                 "INSERT INTO agents(agentId, agentUrl, enabled) VALUES(@agentId, @agentUrl, @enabled)",
-                (
-                    agentId: agent.AgentId,
-                    agentUrl: agent.AgentUrl,
-                    enabled: true
-                ));
+                new 
+                {
+                    agentId = agent.AgentId,
+                    agentUrl = agent.AgentAddress,
+                    enabled = true
+                });
         }
 
         public void RemoveAgent(int id)

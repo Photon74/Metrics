@@ -58,7 +58,7 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.QuerySingle<DateTimeOffset>("Select isnull(max(time),0) from hddmetrics");
+            return connection.QuerySingle<DateTimeOffset>("Select ifnull(max(time),0) from hddmetrics");
         }
     }
 }

@@ -39,7 +39,7 @@ namespace MetricsManager.Quartz.Jobs
                 {
                     FromTime = fromTime,
                     ToTime = toTime,
-                    AgentUrl = agent.AgentUrl.ToString()
+                    AgentUrl = agent.AgentAddress.ToString()
                 });
 
                 foreach (var metric in metrics.Metrics)

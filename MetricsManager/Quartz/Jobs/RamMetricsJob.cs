@@ -37,7 +37,7 @@ namespace MetricsManager.Quartz.Jobs
 
                 var metrics = _client.GetRamMetrics(new RamMetricsRequest
                 {
-                    AgentUrl = agent.AgentUrl.ToString(),
+                    AgentUrl = agent.AgentAddress.ToString(),
                     FromTime = fromTime,
                     ToTime = toTime
                 });

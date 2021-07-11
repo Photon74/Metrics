@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace MetricsManager.Controllers.Models
+﻿namespace MetricsManager.Controllers.Models
 {
     public class AgentInfo
     {
-        public int AgentId { get; }
-
-        public Uri AgentAddress { get; }
+        public int AgentId { get; set; }
+        public string AgentAddress { get; set; }
+        public bool Enabled { get; set; }
     }
 }
