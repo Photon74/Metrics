@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Dapper;
 using MetricsManager.Client;
 using MetricsManager.Client.Requests;
+using MetricsManager.DAL;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
 using Quartz;
@@ -25,6 +27,7 @@ namespace MetricsManager.Quartz.Jobs
             _agentRepository = agentRepository;
             _client = client;
             _mapper = mapper;
+            SqlMapper.AddTypeHandler(new UriHandler());
         }
 
         public Task Execute(IJobExecutionContext context)
@@ -33,16 +36,16 @@ namespace MetricsManager.Quartz.Jobs
             foreach (var agent in agents)
             {
                 var fromTime = _metricsRepository.GetLastDate(agent.AgentId);
-                var toTime = DateTimeOffset.UtcNow;
+                var toTime = DateTimeOffset.Now;
 
                 var metrics = _client.GetCpuMetrics(new CpuMetricsRequest
                 {
                     FromTime = fromTime,
                     ToTime = toTime,
-                    AgentUrl = agent.AgentAddress.ToString()
+                    AgentUrl = new Uri(agent.AgentUrl)
                 });
 
-                foreach (var metric in metrics.Metrics)
+                foreach (var metric in metrics)
                 {
                     _metricsRepository.Create(_mapper.Map<CpuMetrics>(metric));
                 }

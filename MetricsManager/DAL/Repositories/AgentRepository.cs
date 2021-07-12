@@ -32,7 +32,7 @@ namespace MetricsManager.DAL.Repositories
         public IList<Agent> GetAllAgents()
         {
             using var connection = _connection.CreateOpenedConnection();
-            var res = connection.Query<Agent>("SELECT * FROM agents WHERE enabled = 1").ToList();
+            var res = connection.Query<Agent>("SELECT AgentId, AgentUrl, Enabled FROM agents").ToList();
             return res;
         }
 
@@ -45,7 +45,7 @@ namespace MetricsManager.DAL.Repositories
                 new 
                 {
                     agentId = agent.AgentId,
-                    agentUrl = agent.AgentAddress,
+                    agentUrl = agent.AgentUrl,
                     enabled = true
                 });
         }

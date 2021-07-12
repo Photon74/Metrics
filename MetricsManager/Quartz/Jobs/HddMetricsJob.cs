@@ -33,18 +33,21 @@ namespace MetricsManager.Quartz.Jobs
             foreach (var agent in agents)
             {
                 var fromTime = _metricsRepository.GetLastDate(agent.AgentId);
-                var toTime = DateTimeOffset.UtcNow;
+                var toTime = DateTimeOffset.Now;
 
                 var metrics = _client.GetHddMetrics(new HddMetricsRequest
                 {
                     FromTime = fromTime,
                     ToTime = toTime,
-                    AgentUrl = agent.AgentAddress
+                    AgentUrl = new Uri(agent.AgentUrl)
                 });
 
-                foreach (var metric in metrics.Metrics)
+                if (metrics != null)
                 {
-                    _metricsRepository.Create(_mapper.Map<HddMetrics>(metric));
+                    foreach (var metric in metrics.Metrics)
+                    {
+                        _metricsRepository.Create(_mapper.Map<HddMetrics>(metric));
+                    }
                 }
             }
             return Task.CompletedTask;

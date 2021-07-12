@@ -22,11 +22,12 @@ namespace MetricsManager.DAL.Repositories
             using var connection = _connection.CreateOpenedConnection();
 
             connection.Execute("INSERT INTO cpumetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
-                (
-                    value: item.Value,
-                    time: item.Time,
-                    agentId: item.AgentId
-                ));
+                new
+                {
+                    value = item.Value,
+                    time = item.Time,
+                    agentId = item.AgentId
+                });
         }
 
         public IList<CpuMetrics> GetByTimePeriod(TimePeriod period)

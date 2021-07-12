@@ -61,25 +61,25 @@ namespace MetricsManager
                 jobType: typeof(CpuMetricsJob),
                 cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<RamMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(RamMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<RamMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(RamMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<HddMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(HddMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<HddMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(HddMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<NetworkMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(NetworkMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<NetworkMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(NetworkMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<DotNetMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(DotNetMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<DotNetMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(DotNetMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
             services.AddSingleton<IDBConnectionManager, SQLiteConnectionManager>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();

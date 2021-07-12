@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MetricsManager.Mapper
 {
-    public class DateTimeOffsetConverter : ITypeConverter<long, DateTimeOffset>
+    public class LongToDateTimeOffsetConverter : ITypeConverter<long, DateTimeOffset>
     {
         public DateTimeOffset Convert(long source,
                                       DateTimeOffset destination,

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MetricsManager.Client.Models;
+using MetricsManager.Client.Responses;
 using MetricsManager.Controllers.Models;
 using MetricsManager.DAL.Models;
 using System;
@@ -13,11 +14,15 @@ namespace MetricsManager.Mapper
             CreateMap<AgentInfo, Agent>();
             CreateMap<Agent, AgentInfo>();
             CreateMap<CpuMetrics, CpuMetricDto>();
+            CreateMap<CpuMetricDto, CpuMetrics>();
             CreateMap<DotNetMetrics, DotNetMetricDto>();
             CreateMap<HddMetrics, HddMetricDto>();
             CreateMap<NetworkMetrics, NetworkMetricDto>();
             CreateMap<RamMetrics, RamMetricDto>();
-            CreateMap<long, DateTimeOffset>().ConvertUsing(new DateTimeOffsetConverter());
+            CreateMap<CpuMetrics, CpuMetricsResponse>();
+            CreateMap<CpuMetricsResponse, CpuMetrics>();
+            CreateMap<long, DateTimeOffset>().ConvertUsing(new LongToDateTimeOffsetConverter());
+            CreateMap<DateTimeOffset, long>().ConvertUsing(new DateTimeOffsetToLongConverter());
         }
     }
 }

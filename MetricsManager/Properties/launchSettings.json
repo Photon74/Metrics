@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -11,7 +11,6 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": false,
       "launchUrl": "api/metrics/cpu",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -19,12 +18,20 @@
     },
     "MetricsManager": {
       "commandName": "Project",
-      "launchBrowser": false,
       "launchUrl": "api/metrics/cpu",
-      "applicationUrl": "https://localhost:5003;http://localhost:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5003;http://localhost:5002"
+    },
+    "WSL 2": {
+      "commandName": "WSL2",
+      "launchUrl": "https://localhost:5003/api/metrics/cpu",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:5003;http://localhost:5002"
+      },
+      "distributionName": ""
     }
   }
 }

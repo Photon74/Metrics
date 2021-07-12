@@ -2,6 +2,7 @@
 using MetricsManager.Client.Responses;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -18,19 +19,24 @@ namespace MetricsManager.Client
             _logger = logger;
         }
 
-        public CpuMetricsResponse GetCpuMetrics(CpuMetricsRequest request)
+        public IEnumerable<CpuMetricsResponse> GetCpuMetrics(CpuMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToUnixTimeSeconds();
-            var toTime = request.ToTime.ToUnixTimeSeconds();
+            var fromTime = request.FromTime;
+            var toTime = request.ToTime;
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}/api/metrics/cpu/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/cpu/from/{fromTime}/to/{toTime}");
 
             try
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<CpuMetricsResponse>(responseStream).Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var res = JsonSerializer.DeserializeAsync<IEnumerable<CpuMetricsResponse>>(responseStream, options).Result;
+                return res;
             }
             catch (Exception ex)
             {
@@ -51,7 +57,11 @@ namespace MetricsManager.Client
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<DotNetMetricsResponse>(responseStream).Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                return JsonSerializer.DeserializeAsync<DotNetMetricsResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
@@ -72,7 +82,11 @@ namespace MetricsManager.Client
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<HddMetricsResponse>(responseStream).Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                return JsonSerializer.DeserializeAsync<HddMetricsResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
@@ -93,7 +107,11 @@ namespace MetricsManager.Client
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<NetworkMetricsResponse>(responseStream).Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                return JsonSerializer.DeserializeAsync<NetworkMetricsResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
@@ -114,7 +132,11 @@ namespace MetricsManager.Client
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<RamMetricsResponse>(responseStream).Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                return JsonSerializer.DeserializeAsync<RamMetricsResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
