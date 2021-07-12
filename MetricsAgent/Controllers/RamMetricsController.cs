@@ -1,10 +1,6 @@
-﻿using MetricsAgent.Controllers.Responses;
-using MetricsAgent.DAL.Models;
-using MetricsAgent.DAL.Repositories;
+﻿using MediatR;
+using MetricsAgent.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
 {
@@ -12,41 +8,17 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class RamMetricsController : ControllerBase
     {
-        private readonly ILogger<RamMetricsController> _logger;
-        private readonly IRamMetricsRepository _repository;
+        private readonly IMediator _mediator;
 
-        public RamMetricsController(ILogger<RamMetricsController> logger, IRamMetricsRepository repository)
+        public RamMetricsController(IMediator mediator)
         {
-            _logger = logger;
-            _logger.LogDebug(1, "NLog is built into CpuMetricsController");
-            _repository = repository;
-        }
-        [HttpGet("available/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetrics(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
-        {
-            _logger.LogInformation($"Get Ram Metrics: fromTime - {fromTime}, toTime - {toTime}");
-
-            IList<RamMetrics> metrics = _repository.GetByTimePeriod(fromTime, toTime);
-
-            RamMetricsResponse response = new RamMetricsResponse
-            {
-                Metrics = new List<RamMetricDto>()
-            };
-
-            foreach (var metric in metrics)
-            {
-                response.Metrics.Add(new RamMetricDto
-                {
-                    Id = metric.Id,
-                    Value = metric.Value,
-                    Time = DateTimeOffset.FromUnixTimeSeconds(metric.Time)
-                });
-            }
-
-            return Ok(response);
+            _mediator = mediator;
         }
 
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetrics([FromRoute] DateTimeRangeForRam dateTimeRange)
+        {
+            return Ok(_mediator.Send(dateTimeRange).Result);
+        }
     }
 }

@@ -1,60 +1,43 @@
-﻿using MetricsAgent.DAL.Interfaces;
+﻿using Dapper;
+using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
+using System.Linq;
 
 namespace MetricsAgent.DAL.Repositories
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetrics>
-    {
-    }
-
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private const string ConnectionString = ConnectionStringToDataBase.ConnectionString;
+        private readonly IDBConnectionManager _connection;
+
+        public CpuMetricsRepository(IDBConnectionManager connection)
+        {
+            _connection = connection;
+            SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
+        }
 
         public void Create(CpuMetrics item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
-
-            using var command = new SQLiteCommand(connection);
-
-            command.CommandText = "INSERT INTO cpumetrics(value, time) VALUES(@value, @time)";
-            command.Parameters.AddWithValue("@value", item.Value);
-            command.Parameters.AddWithValue("@time", item.Time);
-            command.Prepare();
-            command.ExecuteNonQuery();
+            using var connection = _connection.CreateOpenedConnection();
+            connection.Execute("INSERT INTO cpumetrics(value, time) VALUES(@value, @time)",
+                new
+                {
+                    value = item.Value,
+                    time = item.Time
+                });
         }
 
         public IList<CpuMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
+            using var connection = _connection.CreateOpenedConnection();
 
-            using var command = new SQLiteCommand(connection);
-
-            command.CommandText = "SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime";
-            command.Parameters.AddWithValue("@fromTime", fromTime.ToUnixTimeSeconds());
-            command.Parameters.AddWithValue("@toTime", toTime.ToUnixTimeSeconds());
-            command.Prepare();
-
-            var result = new List<CpuMetrics>();
-
-            using (SQLiteDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
+            return connection.Query<CpuMetrics>("SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
+                new
                 {
-                    result.Add(new CpuMetrics
-                    {
-                        Id = reader.GetInt32(0),
-                        Value = reader.GetInt32(1),
-                        Time = reader.GetInt64(2)
-                    });
-                }
-            }
-            return result;
+                    fromTime = fromTime.ToUnixTimeSeconds(),
+                    toTime = toTime.ToUnixTimeSeconds()
+                }).ToList();
         }
     }
 }

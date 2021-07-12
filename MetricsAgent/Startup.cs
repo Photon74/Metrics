@@ -1,4 +1,8 @@
+using AutoMapper;
+using MediatR;
+using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Repositories;
+using MetricsAgent.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,20 +24,24 @@ namespace MetricsAgent
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            var mapper = new MapperConfiguration(mapper => mapper.AddProfile(new MapperProfile())).CreateMapper();
+
             ConfigureSqlLiteConnection();
+            services.AddControllers();
+            services.AddMediatR(typeof(Startup));
+            services.AddSingleton(mapper);
+
             services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddScoped<IDotNetMetricsRepository, DotNetMetricsRepository>();
             services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
             services.AddScoped<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
+            services.AddSingleton<IDBConnectionManager, SQLiteConnectionManager>();
         }
 
         private void ConfigureSqlLiteConnection()
         {
-            const string connectionString = ConnectionStringToDataBase.ConnectionString;
-            var connection = new SQLiteConnection(connectionString);
-            connection.Open();
+            var connection = new SQLiteConnectionManager().CreateOpenedConnection() as SQLiteConnection;
             PrepareSchema(connection);
         }
 

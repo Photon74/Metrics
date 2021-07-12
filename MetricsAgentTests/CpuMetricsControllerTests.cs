@@ -1,32 +1,43 @@
-using MetricsAgent.Controllers;
+using AutoMapper;
+using MetricsAgent.Controllers.Requests;
+using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
-using MetricsAgent.DAL.Repositories;
+using MetricsAgent.Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Xunit;
 
 namespace MetricsAgentTests
 {
     public class CpuMetricsControllerTests
     {
-        private CpuMetricsController controller;
-        private Mock<ILogger<CpuMetricsController>> mockLogger;
-        private Mock<ICpuMetricsRepository> mockRepository;
+        private readonly Mock<ILogger<CpuRequestHandler>> _mockLogger;
+        private readonly Mock<ICpuMetricsRepository> _mockRepository;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly DateTimeRangeForCpu _dateTimeRange;
+        private readonly CpuRequestHandler _handler;
 
         public CpuMetricsControllerTests()
         {
-            mockLogger = new Mock<ILogger<CpuMetricsController>>();
-            mockRepository = new Mock<ICpuMetricsRepository>();
-            controller = new CpuMetricsController(mockLogger.Object, mockRepository.Object);
+            _mockLogger = new Mock<ILogger<CpuRequestHandler>>();
+            _mockRepository = new Mock<ICpuMetricsRepository>();
+            _mockMapper = new Mock<IMapper>();
+            _dateTimeRange = new DateTimeRangeForCpu
+            {
+                FromTime = DateTimeOffset.FromUnixTimeSeconds(0),
+                ToTime = DateTimeOffset.FromUnixTimeSeconds(100)
+            };
+            _handler = new CpuRequestHandler(_mockRepository.Object, _mockMapper.Object, _mockLogger.Object);
         }
 
         [Fact]
         public void GetMetricst_ReturnOk()
         {
             //Arrange
-            mockRepository.Setup(repository =>
+            _mockRepository.Setup(repository =>
                 repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()))
                 .Returns(new List<CpuMetrics>()).Verifiable();
 
@@ -34,10 +45,10 @@ namespace MetricsAgentTests
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             //Act
-            var result = controller.GetMetrics(fromTime, toTime);
+            var result = _handler.Handle(_dateTimeRange, CancellationToken.None);
 
             //Assert
-            mockRepository.Verify(repository =>
+            _mockRepository.Verify(repository =>
                 repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
     }
