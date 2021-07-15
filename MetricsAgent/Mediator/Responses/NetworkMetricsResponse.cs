@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MetricsAgent.Mediator.Models;
+using System.Collections.Generic;
 
-namespace MetricsAgent.Controllers.Models
+namespace MetricsAgent.Mediator.Responses
 {
     public class NetworkMetricsResponse
     {

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MetricsAgent.Controllers.Requests;
+using MetricsAgent.Mediator.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsAgent.Controllers

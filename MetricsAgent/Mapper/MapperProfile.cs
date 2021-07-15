@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using MetricsAgent.Controllers.Models;
 using MetricsAgent.DAL.Models;
+using MetricsAgent.Mediator.Models;
 using System;
 
 namespace MetricsAgent.Mapper

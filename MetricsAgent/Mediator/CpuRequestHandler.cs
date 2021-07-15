@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using MetricsAgent.Controllers.Models;
-using MetricsAgent.Controllers.Requests;
 using MetricsAgent.DAL.Interfaces;
+using MetricsAgent.Mediator.Models;
+using MetricsAgent.Mediator.Requests;
+using MetricsAgent.Mediator.Responses;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent.Mediator
 {
-    public class CpuRequestHandler : IRequestHandler<DateTimeRangeForCpu, List<CpuMetricDto>>
+    public class CpuRequestHandler : IRequestHandler<DateTimeRangeForCpu, CpuMetricsResponse>
     {
         private readonly ICpuMetricsRepository _repository;
         private readonly IMapper _mapper;
@@ -25,17 +26,17 @@ namespace MetricsAgent.Mediator
             _logger = logger;
         }
 
-        public Task<List<CpuMetricDto>> Handle(DateTimeRangeForCpu request, CancellationToken cancellationToken)
+        public Task<CpuMetricsResponse> Handle(DateTimeRangeForCpu request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Geting Cpu Metrics: from - {request.FromTime}, to - {request.ToTime}");
 
             var metrics = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
 
-            var response = new List<CpuMetricDto>();
+            var response = new CpuMetricsResponse { Metrics = new List<CpuMetricDto>() };
 
             foreach (var metric in metrics)
             {
-                response.Add(_mapper.Map<CpuMetricDto>(metric));
+                response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
             }
             return Task.FromResult(response);
         }

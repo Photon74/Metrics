@@ -1,7 +1,7 @@
-﻿using MetricsAgent.Controllers.Models;
+﻿using MetricsAgent.Mediator.Models;
 using System.Collections.Generic;
 
-namespace MetricsAgent.Controllers.Responses
+namespace MetricsAgent.Mediator.Responses
 {
     public class CpuMetricsResponse
     {

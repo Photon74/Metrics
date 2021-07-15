@@ -13,14 +13,14 @@ namespace MetricsManager.Mapper
         {
             CreateMap<AgentInfo, Agent>();
             CreateMap<Agent, AgentInfo>();
-            CreateMap<CpuMetrics, CpuMetricDto>();
-            CreateMap<CpuMetricDto, CpuMetrics>();
+            CreateMap<CpuMetrics, CpuMetric>();
+            CreateMap<CpuMetric, CpuMetrics>();
             CreateMap<DotNetMetrics, DotNetMetricDto>();
             CreateMap<HddMetrics, HddMetricDto>();
             CreateMap<NetworkMetrics, NetworkMetricDto>();
             CreateMap<RamMetrics, RamMetricDto>();
-            CreateMap<CpuMetrics, CpuMetricsResponse>();
-            CreateMap<CpuMetricsResponse, CpuMetrics>();
+            CreateMap<CpuMetrics, CpuMetricsApiResponse>();
+            CreateMap<CpuMetricsApiResponse, CpuMetrics>();
             CreateMap<long, DateTimeOffset>().ConvertUsing(new LongToDateTimeOffsetConverter());
             CreateMap<DateTimeOffset, long>().ConvertUsing(new DateTimeOffsetToLongConverter());
         }

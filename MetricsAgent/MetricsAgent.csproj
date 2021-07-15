@@ -26,9 +26,5 @@
     <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Interfaces\" />
-  </ItemGroup>
-
 
 </Project>

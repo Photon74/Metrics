@@ -3,7 +3,10 @@ using MetricsManager.Client.Responses;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
+using System.Reflection.PortableExecutable;
+using System.Text;
 using System.Text.Json;
 
 namespace MetricsManager.Client
@@ -19,10 +22,10 @@ namespace MetricsManager.Client
             _logger = logger;
         }
 
-        public IEnumerable<CpuMetricsResponse> GetCpuMetrics(CpuMetricsRequest request)
+        public IEnumerable<CpuMetricsApiResponse> GetCpuMetrics(CpuMetricsApiRequest request)
         {
-            var fromTime = request.FromTime;
-            var toTime = request.ToTime;
+            var fromTime = request.FromTime.ToString("O");
+            var toTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
                 $"{request.AgentUrl}api/metrics/cpu/from/{fromTime}/to/{toTime}");
@@ -35,7 +38,7 @@ namespace MetricsManager.Client
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                var res = JsonSerializer.DeserializeAsync<IEnumerable<CpuMetricsResponse>>(responseStream, options).Result;
+                var res = JsonSerializer.DeserializeAsync<IEnumerable<CpuMetricsApiResponse>>(responseStream, options).Result;
                 return res;
             }
             catch (Exception ex)
@@ -57,6 +60,10 @@ namespace MetricsManager.Client
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
+                using (var reader = new StreamReader(responseStream, Encoding.UTF8))
+                {
+                    string value = reader.ReadToEnd();
+                }
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true

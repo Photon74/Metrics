@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace MetricsManager.Quartz.Jobs
 {
+    //[DisallowConcurrentExecution]
     public class CpuMetricsJob : IJob
     {
         private readonly ICpuMetricsRepository _metricsRepository;
@@ -36,18 +37,21 @@ namespace MetricsManager.Quartz.Jobs
             foreach (var agent in agents)
             {
                 var fromTime = _metricsRepository.GetLastDate(agent.AgentId);
-                var toTime = DateTimeOffset.Now;
+                var toTime = DateTimeOffset.UtcNow;
 
-                var metrics = _client.GetCpuMetrics(new CpuMetricsRequest
+                var metrics = _client.GetCpuMetrics(new CpuMetricsApiRequest
                 {
                     FromTime = fromTime,
                     ToTime = toTime,
                     AgentUrl = new Uri(agent.AgentUrl)
                 });
 
-                foreach (var metric in metrics)
+                if (metrics != null)
                 {
-                    _metricsRepository.Create(_mapper.Map<CpuMetrics>(metric));
+                    foreach (var metric in metrics)
+                    {
+                        _metricsRepository.Create(_mapper.Map<CpuMetrics>(metric));
+                    }
                 }
             }
             return Task.CompletedTask;

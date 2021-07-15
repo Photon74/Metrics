@@ -36,10 +36,11 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<CpuMetrics>(
                 "SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
-                (
-                    fromTime: period.FromTime.ToUnixTimeSeconds(),
-                    toTime: period.ToTime.ToUnixTimeSeconds()
-                )).ToList();
+                new
+                {
+                    fromTime = period.FromTime.ToUnixTimeSeconds(),
+                    toTime = period.ToTime.ToUnixTimeSeconds()
+                }).ToList();
         }
 
         public IList<CpuMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
@@ -48,18 +49,19 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<CpuMetrics>(
                 "SELECT * FROM cpumetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
-                (
-                    agentId: period.AgentId,
-                    fromTime: period.FromTime.ToUnixTimeSeconds(),
-                    toTime: period.ToTime.ToUnixTimeSeconds()
-                )).ToList();
+                new
+                {
+                    agentId = period.AgentId,
+                    fromTime = period.FromTime.ToUnixTimeSeconds(),
+                    toTime = period.ToTime.ToUnixTimeSeconds()
+                }).ToList();
         }
 
         public DateTimeOffset GetLastDate(int agentId)
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.QuerySingle<DateTimeOffset>("Select ifnull(max(time),0) from cpumetrics");
+            return connection.QuerySingle<DateTimeOffset>("Select ifnull(max(Time),0) from cpumetrics");
         }
     }
 }

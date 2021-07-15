@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MetricsAgent.Controllers.Models
+namespace MetricsAgent.Mediator.Models
 {
-    public class DotNetMetricDto
+    public class RamMetricDto
     {
         public int Id { get; set; }
         public int Value { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MetricsAgent.Controllers.Models
+namespace MetricsAgent.Mediator.Models
 {
     public class CpuMetricDto
     {

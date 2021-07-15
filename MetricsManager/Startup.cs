@@ -48,9 +48,9 @@ namespace MetricsManager
             var mapper = new MapperConfiguration(mapper => mapper.AddProfile(new MapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
-                    .AddTransientHttpErrorPolicy(p => p
-                    .WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
+            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>();
+            //        .AddTransientHttpErrorPolicy(p => p
+            //        .WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
 
             services.AddHostedService<QuartzHostedService>();
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
@@ -97,6 +97,8 @@ namespace MetricsManager
                               IWebHostEnvironment env,
                               IMigrationRunner migrationRunner)
         {
+            migrationRunner.MigrateUp();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -113,7 +115,6 @@ namespace MetricsManager
                 endpoints.MapControllers();
             });
 
-            migrationRunner.MigrateUp();
         }
     }
 }

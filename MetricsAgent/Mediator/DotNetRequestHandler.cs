@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using MetricsAgent.Controllers.Models;
-using MetricsAgent.Controllers.Requests;
 using MetricsAgent.DAL.Interfaces;
+using MetricsAgent.Mediator.Models;
+using MetricsAgent.Mediator.Requests;
+using MetricsAgent.Mediator.Responses;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent.Mediator
 {
-    public class DotNetRequestHandler : IRequestHandler<DateTimeRangeForDotNet, List<DotNetMetricDto>>
+    public class DotNetRequestHandler : IRequestHandler<DateTimeRangeForDotNet, DotNetMetricsResponse>
     {
         private readonly IDotNetMetricsRepository _repository;
         private readonly IMapper _mapper;
@@ -25,17 +26,17 @@ namespace MetricsAgent.Mediator
             _logger = logger;
         }
 
-        public Task<List<DotNetMetricDto>> Handle(DateTimeRangeForDotNet request, CancellationToken cancellationToken)
+        public Task<DotNetMetricsResponse> Handle(DateTimeRangeForDotNet request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Geting DotNet Metrics: from - {request.FromTime}, to - {request.ToTime}");
 
             var metrics = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
 
-            var response = new List<DotNetMetricDto>();
+            var response = new DotNetMetricsResponse { Metrics = new List<DotNetMetricDto>() };
 
             foreach (var metric in metrics)
             {
-                response.Add(_mapper.Map<DotNetMetricDto>(metric));
+                response.Metrics.Add(_mapper.Map<DotNetMetricDto>(metric));
             }
             return Task.FromResult(response);
         }

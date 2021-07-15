@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MetricsAgent.Controllers.Models
+namespace MetricsAgent.Mediator.Models
 {
-    public class HddMetricDto
+    public class NetworkMetricDto
     {
         public int Id { get; set; }
         public int Value { get; set; }

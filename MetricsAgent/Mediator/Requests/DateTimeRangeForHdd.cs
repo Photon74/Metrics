@@ -1,12 +1,13 @@
 ﻿using MediatR;
-using MetricsAgent.Controllers.Models;
+using MetricsAgent.Mediator.Models;
+using MetricsAgent.Mediator.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
-namespace MetricsAgent.Controllers.Requests
+namespace MetricsAgent.Mediator.Requests
 {
-    public class DateTimeRangeForCpu : IRequest<List<CpuMetricDto>>
+    public class DateTimeRangeForHdd : IRequest<HddMetricsResponse>
     {
         [FromRoute]
         public DateTimeOffset FromTime { get; set; }

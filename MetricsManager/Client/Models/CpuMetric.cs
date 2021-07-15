@@ -1,14 +1,19 @@
 ﻿using MetricsManager.Client.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace MetricsManager.Client.Models
 {
-    public class CpuMetricDto : IMetricsResponse<CpuMetricDto>
+    public class CpuMetric
     {
+        [JsonPropertyName("id")]
         public int Id { get; set; }
+
+        [JsonPropertyName("value")]
         public int Value { get; set; }
-        public long Time { get; set; }
-        public IList<CpuMetricDto> Metrics { get; set; }
+
+        [JsonPropertyName("time")]
+        public DateTime Time { get; set; }
     }
 }

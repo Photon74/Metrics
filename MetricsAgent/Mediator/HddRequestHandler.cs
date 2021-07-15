@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using MetricsAgent.Controllers.Models;
-using MetricsAgent.Controllers.Requests;
 using MetricsAgent.DAL.Interfaces;
+using MetricsAgent.Mediator.Models;
+using MetricsAgent.Mediator.Requests;
+using MetricsAgent.Mediator.Responses;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent.Mediator
 {
-    public class HddRequestHandler : IRequestHandler<DateTimeRangeForHdd, List<HddMetricDto>>
+    public class HddRequestHandler : IRequestHandler<DateTimeRangeForHdd, HddMetricsResponse>
     {
         private readonly IHddMetricsRepository _repository;
         private readonly IMapper _mapper;
@@ -23,17 +24,17 @@ namespace MetricsAgent.Mediator
             _logger = logger;
         }
 
-        public Task<List<HddMetricDto>> Handle(DateTimeRangeForHdd request, CancellationToken cancellationToken)
+        public Task<HddMetricsResponse> Handle(DateTimeRangeForHdd request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Geting Hdd Metrics: from - {request.FromTime}, to - {request.ToTime}");
 
             var metrics = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
 
-            var response = new List<HddMetricDto>();
+            var response = new HddMetricsResponse { Metrics = new List<HddMetricDto>() };
 
             foreach (var metric in metrics)
             {
-                response.Add(_mapper.Map<HddMetricDto>(metric));
+                response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
             }
             return Task.FromResult(response);
         }
