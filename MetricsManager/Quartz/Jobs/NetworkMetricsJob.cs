@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Dapper;
 using MetricsManager.Client;
 using MetricsManager.Client.Requests;
+using MetricsManager.DAL;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
 using Quartz;
@@ -25,6 +27,7 @@ namespace MetricsManager.Quartz.Jobs
             _agentRepository = agentRepository;
             _client = client;
             _mapper = mapper;
+            SqlMapper.AddTypeHandler(new UriHandler());
         }
 
         public Task Execute(IJobExecutionContext context)

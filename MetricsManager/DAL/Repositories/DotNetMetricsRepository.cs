@@ -35,27 +35,29 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.Query<DotNetMetrics>(
+            var res = connection.Query<DotNetMetrics>(
                 "SELECT * FROM dotnetmetrics WHERE time BETWEEN @fromTime AND @toTime",
                 new
                 {
-                    fromTime = period.FromTime,
-                    toTime = period.ToTime
+                    fromTime = period.FromTime.ToUnixTimeSeconds(),
+                    toTime = period.ToTime.ToUnixTimeSeconds()
                 }).ToList();
+            return res;
         }
 
         public IList<DotNetMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.Query<DotNetMetrics>(
+            var res = connection.Query<DotNetMetrics>(
                 "SELECT * FROM dotnetmetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
                 new
                 {
-                    agenId = period.AgentId,
-                    fromTime = period.FromTime,
-                    toTime = period.ToTime
+                    agentId = period.AgentId,
+                    fromTime = period.FromTime.ToUnixTimeSeconds(),
+                    toTime = period.ToTime.ToUnixTimeSeconds()
                 }).ToList();
+            return res;
         }
 
         public DateTimeOffset GetLastDate(int agentId)

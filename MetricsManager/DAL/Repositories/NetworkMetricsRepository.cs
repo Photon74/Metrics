@@ -39,8 +39,8 @@ namespace MetricsManager.DAL.Repositories
                 "SELECT * FROM networkmetrics WHERE time BETWEEN @fromTime AND @toTime",
                 new
                 {
-                    fromTime = period.FromTime,
-                    toTime = period.ToTime
+                    fromTime = period.FromTime.ToUnixTimeSeconds(),
+                    toTime = period.ToTime.ToUnixTimeSeconds()
                 }).ToList();
         }
 
@@ -53,8 +53,8 @@ namespace MetricsManager.DAL.Repositories
                 new
                 {
                     agentId = period.AgentId,
-                    fromTime = period.FromTime,
-                    toTime = period.ToTime
+                    fromTime = period.FromTime.ToUnixTimeSeconds(),
+                    toTime = period.ToTime.ToUnixTimeSeconds()
                 }).ToList();
         }
 

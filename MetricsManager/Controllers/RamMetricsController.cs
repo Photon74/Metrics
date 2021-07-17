@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using MediatR;
 using MetricsManager.Client.Models;
 using MetricsManager.Client.Responses;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
+using MetricsManager.Mediator.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,56 +16,23 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class RamMetricsController : ControllerBase
     {
-        private readonly IRamMetricsRepository _repository;
-        private readonly IMapper _mapper;
-        private readonly ILogger<RamMetricsController> _logger;
+        private readonly IMediator _mediator;
 
-        public RamMetricsController(IRamMetricsRepository repository,
-                                    IMapper mapper,
-                                    ILogger<RamMetricsController> logger)
+        public RamMetricsController(IMediator mediator)
         {
-            _repository = repository;
-            _mapper = mapper;
-            _logger = logger;
-            _logger.LogDebug(1, "NLog is built in RamMetricsController");
+            _mediator = mediator;
         }
 
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent([FromRoute] AgentIdTimePeriod agentIdTimePeriod)
+        public IActionResult GetMetricsFromAgent([FromRoute] AgentIdTimePeriodRamRequest request)
         {
-            _logger.LogInformation($"Geting Ram Metrics: " +
-                $"from MetricsAgent - {agentIdTimePeriod.AgentId} " +
-                $"from - {agentIdTimePeriod.FromTime}, " +
-                $"to - {agentIdTimePeriod.ToTime}");
-
-            var metrics = _repository.GetByTimePeriodFromAgent(agentIdTimePeriod);
-
-            var response = new RamMetricsApiResponse { Metrics = new List<RamMetricDto>() };
-
-            foreach (var metric in metrics)
-            {
-                response.Metrics.Add(_mapper.Map<RamMetricDto>(metric));
-            }
-            return Ok(response);
+            return Ok(_mediator.Send(request).Result);
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster([FromRoute] TimePeriod timePeriod)
+        public IActionResult GetMetricsFromAllCluster([FromRoute] TimePeriodRamRequest request)
         {
-            _logger.LogInformation($"Geting Ram Metrics: " +
-                $"from all MetricsAgent " +
-                $"from - {timePeriod.FromTime}, " +
-                $"to - {timePeriod.ToTime}");
-
-            var metrics = _repository.GetByTimePeriod(timePeriod);
-
-            var response = new RamMetricsApiResponse { Metrics = new List<RamMetricDto>() };
-
-            foreach (var metric in metrics)
-            {
-                response.Metrics.Add(_mapper.Map<RamMetricDto>(metric));
-            }
-            return Ok(response);
+            return Ok(_mediator.Send(request).Result);
         }
     }
 }
