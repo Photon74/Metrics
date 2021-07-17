@@ -22,7 +22,7 @@ namespace MetricsManager.Client
             _logger = logger;
         }
 
-        public IEnumerable<CpuMetricsApiResponse> GetCpuMetrics(CpuMetricsApiRequest request)
+        public CpuMetricsApiResponse GetCpuMetrics(CpuMetricsApiRequest request)
         {
             var fromTime = request.FromTime.ToString("O");
             var toTime = request.ToTime.ToString("O");
@@ -38,7 +38,7 @@ namespace MetricsManager.Client
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                var res = JsonSerializer.DeserializeAsync<IEnumerable<CpuMetricsApiResponse>>(responseStream, options).Result;
+                var res = JsonSerializer.DeserializeAsync<CpuMetricsApiResponse>(responseStream, options).Result;
                 return res;
             }
             catch (Exception ex)

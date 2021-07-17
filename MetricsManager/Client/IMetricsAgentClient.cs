@@ -7,7 +7,7 @@ namespace MetricsManager.Client
 {
     public interface IMetricsAgentClient
     {
-        IEnumerable<CpuMetricsApiResponse> GetCpuMetrics(CpuMetricsApiRequest request);
+        CpuMetricsApiResponse GetCpuMetrics(CpuMetricsApiRequest request);
         RamMetricsResponse GetRamMetrics(RamMetricsRequest request);
         HddMetricsResponse GetHddMetrics(HddMetricsRequest request);
         DotNetMetricsResponse GetDotNetMetrics(DotNetMetricsRequest request);

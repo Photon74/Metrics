@@ -1,5 +1,6 @@
 ﻿using MetricsManager;
 using MetricsManager.Controllers;
+using MetricsManager.Controllers.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
@@ -19,7 +20,7 @@ namespace MetricsManagerTests
         public void RegisterAgent_ReturnsOk()
         {
             //Arrange
-            var agentInfo = new AgentInfo(1, new Uri("http://google.ru"));
+            var agentInfo = new AgentInfo();
 
             //Act
             var result = controller.RegisterAgent(agentInfo);
