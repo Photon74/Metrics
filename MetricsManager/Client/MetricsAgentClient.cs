@@ -73,7 +73,7 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public HddMetricsResponse GetHddMetrics(HddMetricsRequest request)
+        public HddMetricsApiResponse GetHddMetrics(HddMetricsRequest request)
         {
             var fromTime = request.FromTime.ToString("O");
             var toTime = request.ToTime.ToString("O");
@@ -89,7 +89,7 @@ namespace MetricsManager.Client
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<HddMetricsResponse>(responseStream, options).Result;
+                return JsonSerializer.DeserializeAsync<HddMetricsApiResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public NetworkMetricsResponse GetNetworkMetrics(NetworkMetricsRequest request)
+        public NetworkMetricsApiResponse GetNetworkMetrics(NetworkMetricsRequest request)
         {
             var fromTime = request.FromTime.ToString("O");
             var toTime = request.ToTime.ToString("O");
@@ -114,7 +114,7 @@ namespace MetricsManager.Client
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<NetworkMetricsResponse>(responseStream, options).Result;
+                return JsonSerializer.DeserializeAsync<NetworkMetricsApiResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
@@ -123,7 +123,7 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public RamMetricsResponse GetRamMetrics(RamMetricsRequest request)
+        public RamMetricsApiResponse GetRamMetrics(RamMetricsRequest request)
         {
             var fromTime = request.FromTime.ToString("O");
             var toTime = request.ToTime.ToString("O");
@@ -139,7 +139,7 @@ namespace MetricsManager.Client
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<RamMetricsResponse>(responseStream, options).Result;
+                return JsonSerializer.DeserializeAsync<RamMetricsApiResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {

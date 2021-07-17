@@ -18,6 +18,7 @@ namespace MetricsManager.Mapper
             CreateMap<NetworkMetrics, NetworkMetricDto>();
             CreateMap<RamMetrics, RamMetricDto>();
             CreateMap<CpuMetrics, CpuMetricsApiResponse>();
+            CreateMap<CpuMetrics, CpuMetricDto>();
             CreateMap<CpuMetricsApiResponse, CpuMetrics>();
             CreateMap<long, DateTimeOffset>().ConvertUsing(new LongToDateTimeOffsetConverter());
             CreateMap<DateTimeOffset, long>().ConvertUsing(new DateTimeOffsetToLongConverter());

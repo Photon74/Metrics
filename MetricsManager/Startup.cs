@@ -55,25 +55,25 @@ namespace MetricsManager
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
-            services.AddSingleton<CpuMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(CpuMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<CpuMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(CpuMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<RamMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(RamMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<RamMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(RamMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<HddMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(HddMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<HddMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(HddMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<NetworkMetricsJob>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(NetworkMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+            //services.AddSingleton<NetworkMetricsJob>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(NetworkMetricsJob),
+            //    cronExpression: "0/5 * * * * ?"));
 
             services.AddSingleton<DotNetMetricsJob>();
             services.AddSingleton(new JobSchedule(

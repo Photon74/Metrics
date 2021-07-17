@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace MetricsManager.Client.Responses
 {
-    public class NetworkMetricsResponse
+    public class HddMetricsApiResponse
     {
-        public List<NetworkMetricDto> Metrics { get; set; }
+        public List<HddMetricDto> Metrics { get; set; }
     }
 }

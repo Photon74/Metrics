@@ -35,13 +35,14 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            return connection.Query<CpuMetrics>(
+            var res = connection.Query<CpuMetrics>(
                 "SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
                 new
                 {
                     fromTime = period.FromTime.ToUnixTimeSeconds(),
                     toTime = period.ToTime.ToUnixTimeSeconds()
                 }).ToList();
+            return res;
         }
 
         public IList<CpuMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
