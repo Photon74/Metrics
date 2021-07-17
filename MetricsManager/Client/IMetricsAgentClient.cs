@@ -10,7 +10,7 @@ namespace MetricsManager.Client
         CpuMetricsApiResponse GetCpuMetrics(CpuMetricsApiRequest request);
         RamMetricsResponse GetRamMetrics(RamMetricsRequest request);
         HddMetricsResponse GetHddMetrics(HddMetricsRequest request);
-        DotNetMetricsResponse GetDotNetMetrics(DotNetMetricsRequest request);
+        DotNetMetricsApiResponse GetDotNetMetrics(DotNetMetricsRequest request);
         NetworkMetricsResponse GetNetworkMetrics(NetworkMetricsRequest request);
     }
 }

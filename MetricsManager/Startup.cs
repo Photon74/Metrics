@@ -1,23 +1,22 @@
+using AutoMapper;
+using FluentMigrator.Runner;
 using MediatR;
 using MetricsManager.Client;
-using MetricsManager.Controllers.Models;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Repositories;
+using MetricsManager.Mapper;
+using MetricsManager.Quartz;
+using MetricsManager.Quartz.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Polly;
+using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
-using Quartz;
 using System;
-using MetricsManager.Quartz;
-using AutoMapper;
-using MetricsManager.Mapper;
-using FluentMigrator.Runner;
-using MetricsManager.Quartz.Jobs;
 
 namespace MetricsManager
 {
@@ -48,9 +47,9 @@ namespace MetricsManager
             var mapper = new MapperConfiguration(mapper => mapper.AddProfile(new MapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>();
-            //        .AddTransientHttpErrorPolicy(p => p
-            //        .WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
+            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
+                    .AddTransientHttpErrorPolicy(p => p
+                    .WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
 
             services.AddHostedService<QuartzHostedService>();
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
@@ -61,25 +60,25 @@ namespace MetricsManager
                 jobType: typeof(CpuMetricsJob),
                 cronExpression: "0/5 * * * * ?"));
 
-            //services.AddSingleton<RamMetricsJob>();
-            //services.AddSingleton(new JobSchedule(
-            //    jobType: typeof(RamMetricsJob),
-            //    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<RamMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(RamMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
 
-            //services.AddSingleton<HddMetricsJob>();
-            //services.AddSingleton(new JobSchedule(
-            //    jobType: typeof(HddMetricsJob),
-            //    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<HddMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(HddMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
 
-            //services.AddSingleton<NetworkMetricsJob>();
-            //services.AddSingleton(new JobSchedule(
-            //    jobType: typeof(NetworkMetricsJob),
-            //    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<NetworkMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
 
-            //services.AddSingleton<DotNetMetricsJob>();
-            //services.AddSingleton(new JobSchedule(
-            //    jobType: typeof(DotNetMetricsJob),
-            //    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<DotNetMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
 
             services.AddSingleton<IDBConnectionManager, SQLiteConnectionManager>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();

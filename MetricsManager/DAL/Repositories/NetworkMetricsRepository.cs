@@ -22,12 +22,13 @@ namespace MetricsManager.DAL.Repositories
             using var connection = _connection.CreateOpenedConnection();
 
             connection.Execute(
-                "INSERT INTO Networkmetrics(value, time, agentId) VALUES(@value, @time, @agentId",
-                (
-                    value: item.Value,
-                    time: item.Time,
-                    agentId: item.AgentId
-                ));
+                "INSERT INTO networkmetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
+                new
+                {
+                    value = item.Value,
+                    time = item.Time,
+                    agentId = item.AgentId
+                });
         }
 
         public IList<NetworkMetrics> GetByTimePeriod(TimePeriod period)
@@ -36,10 +37,11 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<NetworkMetrics>(
                 "SELECT * FROM networkmetrics WHERE time BETWEEN @fromTime AND @toTime",
-                (
-                    fromTime: period.FromTime,
-                    toTime: period.ToTime
-                )).ToList();
+                new
+                {
+                    fromTime = period.FromTime,
+                    toTime = period.ToTime
+                }).ToList();
         }
 
         public IList<NetworkMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
@@ -48,11 +50,12 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<NetworkMetrics>(
                 "SELECT * FROM networkmetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
-                (
-                    agentId: period.AgentId,
-                    fromTime: period.FromTime,
-                    toTime: period.ToTime
-                )).ToList();
+                new
+                {
+                    agentId = period.AgentId,
+                    fromTime = period.FromTime,
+                    toTime = period.ToTime
+                }).ToList();
         }
 
         public DateTimeOffset GetLastDate(int agentId)

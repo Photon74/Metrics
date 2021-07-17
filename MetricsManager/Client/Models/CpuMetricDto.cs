@@ -2,7 +2,7 @@
 
 namespace MetricsManager.Client.Models
 {
-    public class CpuMetric
+    public class CpuMetricDto
     {
         public int Id { get; set; }
         public int Value { get; set; }

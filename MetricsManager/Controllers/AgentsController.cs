@@ -31,18 +31,28 @@ namespace MetricsManager.Controllers
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
+            _agentRepository.EnableAgent(agentId);
             return Ok();
         }
 
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
+            _agentRepository.DisableAgent(agentId);
             return Ok();
         }
 
         [HttpGet("get")]
         public IActionResult GetAgentsList()
         {
+            var response = _agentRepository.GetAllAgents();
+            return Ok(response);
+        }
+
+        [HttpPut("delete/{agentId}")]
+        public IActionResult DeleteAgentById([FromRoute] int agentId)
+        {
+            _agentRepository.RemoveAgent(agentId);
             return Ok();
         }
     }

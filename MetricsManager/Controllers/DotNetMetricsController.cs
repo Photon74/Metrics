@@ -8,18 +8,16 @@ namespace MetricsManager.Controllers
     public class DotNetMetricsController : ControllerBase
     {
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent(
-            [FromRoute] int agentId,
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        public IActionResult GetMetricsFromAgent([FromRoute] int agentId,
+                                                 [FromRoute] DateTimeOffset fromTime,
+                                                 [FromRoute] DateTimeOffset toTime)
         {
             return Ok();
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        public IActionResult GetMetricsFromAllCluster([FromRoute] DateTimeOffset fromTime,
+                                                      [FromRoute] DateTimeOffset toTime)
         {
             return Ok();
         }

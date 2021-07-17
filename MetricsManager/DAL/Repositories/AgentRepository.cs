@@ -19,14 +19,22 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            connection.Execute("UPDATE agents SET enabled = false WHERE agentId = @agentId", id);
+            connection.Execute("UPDATE agents SET enabled = false WHERE agentId = @agentId",
+                new
+                {
+                    agentId = id
+                });
         }
 
         public void EnableAgent(int id)
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            connection.Execute("UPDATE agents SET enabled = true WHERE agentId = @agentId", id);
+            connection.Execute("UPDATE agents SET enabled = true WHERE agentId = @agentId",
+                new
+                { 
+                    agentId = id 
+                });
         }
 
         public IList<Agent> GetAllAgents()
@@ -42,7 +50,7 @@ namespace MetricsManager.DAL.Repositories
 
             connection.Execute(
                 "INSERT INTO agents(agentId, agentUrl, enabled) VALUES(@agentId, @agentUrl, @enabled)",
-                new 
+                new
                 {
                     agentId = agent.AgentId,
                     agentUrl = agent.AgentUrl,
@@ -54,7 +62,11 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            connection.Execute("DELETE FROM agents WHERE agentId = @agentId", id);
+            connection.Execute("DELETE FROM agents WHERE agentId = @agentId",
+                new
+                {
+                    agentId = id
+                });
         }
     }
 }

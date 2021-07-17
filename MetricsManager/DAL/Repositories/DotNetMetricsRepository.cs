@@ -23,11 +23,12 @@ namespace MetricsManager.DAL.Repositories
 
             connection.Execute(
                 "INSERT INTO dotnetmetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
-                (
-                    value: item.Value,
-                    time: item.Time,
-                    agentId: item.AgentId
-                ));
+                new
+                {
+                    value = item.Value,
+                    time = item.Time,
+                    agentId = item.AgentId
+                });
         }
 
         public IList<DotNetMetrics> GetByTimePeriod(TimePeriod period)
@@ -36,10 +37,11 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<DotNetMetrics>(
                 "SELECT * FROM dotnetmetrics WHERE time BETWEEN @fromTime AND @toTime",
-                (
-                    fromTime: period.FromTime,
-                    toTime: period.ToTime
-                )).ToList();
+                new
+                {
+                    fromTime = period.FromTime,
+                    toTime = period.ToTime
+                }).ToList();
         }
 
         public IList<DotNetMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
@@ -48,11 +50,12 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<DotNetMetrics>(
                 "SELECT * FROM dotnetmetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
-                (
-                    agenId: period.AgentId,
-                    fromTime: period.FromTime,
-                    toTime: period.ToTime
-                )).ToList();
+                new
+                {
+                    agenId = period.AgentId,
+                    fromTime = period.FromTime,
+                    toTime = period.ToTime
+                }).ToList();
         }
 
         public DateTimeOffset GetLastDate(int agentId)

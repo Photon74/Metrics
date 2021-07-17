@@ -38,8 +38,7 @@ namespace MetricsManager.Client
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                var res = JsonSerializer.DeserializeAsync<CpuMetricsApiResponse>(responseStream, options).Result;
-                return res;
+                return JsonSerializer.DeserializeAsync<CpuMetricsApiResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
@@ -48,27 +47,24 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public DotNetMetricsResponse GetDotNetMetrics(DotNetMetricsRequest request)
+        public DotNetMetricsApiResponse GetDotNetMetrics(DotNetMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToUnixTimeSeconds();
-            var toTime = request.ToTime.ToUnixTimeSeconds();
+            var fromTime = request.FromTime.ToString("O");
+            var toTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}/api/metrics/dotnet/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/dotnet/from/{fromTime}/to/{toTime}");
 
             try
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
-                using (var reader = new StreamReader(responseStream, Encoding.UTF8))
-                {
-                    string value = reader.ReadToEnd();
-                }
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<DotNetMetricsResponse>(responseStream, options).Result;
+                var res = JsonSerializer.DeserializeAsync<DotNetMetricsApiResponse>(responseStream, options).Result;
+                return res;
             }
             catch (Exception ex)
             {
@@ -79,11 +75,11 @@ namespace MetricsManager.Client
 
         public HddMetricsResponse GetHddMetrics(HddMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToUnixTimeSeconds();
-            var toTime = request.ToTime.ToUnixTimeSeconds();
+            var fromTime = request.FromTime.ToString("O");
+            var toTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}/api/metrics/hdd/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/hdd/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -104,11 +100,11 @@ namespace MetricsManager.Client
 
         public NetworkMetricsResponse GetNetworkMetrics(NetworkMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToUnixTimeSeconds();
-            var toTime = request.ToTime.ToUnixTimeSeconds();
+            var fromTime = request.FromTime.ToString("O");
+            var toTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}/api/metrics/network/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/network/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -129,11 +125,11 @@ namespace MetricsManager.Client
 
         public RamMetricsResponse GetRamMetrics(RamMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToUnixTimeSeconds();
-            var toTime = request.ToTime.ToUnixTimeSeconds();
+            var fromTime = request.FromTime.ToString("O");
+            var toTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}/api/metrics/ram/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/ram/from/{fromTime}/to/{toTime}");
 
             try
             {

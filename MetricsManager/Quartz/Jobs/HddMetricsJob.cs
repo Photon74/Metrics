@@ -46,7 +46,12 @@ namespace MetricsManager.Quartz.Jobs
                 {
                     foreach (var metric in metrics.Metrics)
                     {
-                        _metricsRepository.Create(_mapper.Map<HddMetrics>(metric));
+                        _metricsRepository.Create(new HddMetrics
+                        {
+                            Value = metric.Value,
+                            Time = metric.Time.ToUnixTimeSeconds(),
+                            AgentId = agent.AgentId
+                        });
                     }
                 }
             }

@@ -21,7 +21,8 @@ namespace MetricsManager.DAL.Repositories
         {
             using var connection = _connection.CreateOpenedConnection();
 
-            connection.Execute("INSERT INTO cpumetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
+            connection.Execute(
+                "INSERT INTO cpumetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
                 new
                 {
                     value = item.Value,

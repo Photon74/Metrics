@@ -23,11 +23,12 @@ namespace MetricsManager.DAL.Repositories
 
             connection.Execute(
                 "INSERT INTO rammetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
-                (
-                    value: item.Value,
-                    time: item.Time,
-                    agentId: item.AgentId
-                ));
+                new
+                {
+                    value = item.Value,
+                    time = item.Time,
+                    agentId = item.AgentId
+                });
         }
 
         public IList<RamMetrics> GetByTimePeriod(TimePeriod period)
@@ -36,10 +37,11 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<RamMetrics>(
                 "SELECT * FROM rammetrics WHERE time BETWEEN @fromTime AND @toTime",
-                (
-                    fromTime: period.FromTime,
-                    toTime: period.ToTime
-                )).ToList();
+                new
+                {
+                    fromTime = period.FromTime,
+                    toTime = period.ToTime
+                }).ToList();
         }
 
         public IList<RamMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
@@ -48,11 +50,12 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<RamMetrics>(
                 "SELECT * FROM rammetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
-                (
-                    agentId: period.AgentId,
-                    fromTime: period.FromTime,
-                    toTime: period.ToTime
-                )).ToList();
+                new
+                {
+                    agentId = period.AgentId,
+                    fromTime = period.FromTime,
+                    toTime = period.ToTime
+                }).ToList();
         }
 
         public DateTimeOffset GetLastDate(int agentId)

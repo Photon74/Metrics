@@ -22,11 +22,12 @@ namespace MetricsManager.DAL.Repositories
             using var connection = _connection.CreateOpenedConnection();
 
             connection.Execute("INSERT INTO hddmetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
-                (
-                    value: item.Value,
-                    time: item.Time,
-                    agentId: item.AgentId
-                ));
+                new
+                {
+                    value = item.Value,
+                    time = item.Time,
+                    agentId = item.AgentId
+                });
         }
 
         public IList<HddMetrics> GetByTimePeriod(TimePeriod period)
@@ -35,10 +36,11 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<HddMetrics>(
                 "SELECT * FROM hddmetrics WHERE time BETWEEN @fromTime AND @toTime",
-                (
-                    fromTime: period.FromTime.ToUnixTimeSeconds(),
-                    toTime: period.ToTime.ToUnixTimeSeconds()
-                )).ToList();
+                new
+                {
+                    fromTime = period.FromTime.ToUnixTimeSeconds(),
+                    toTime = period.ToTime.ToUnixTimeSeconds()
+                }).ToList();
         }
 
         public IList<HddMetrics> GetByTimePeriodFromAgent(AgentIdTimePeriod period)
@@ -47,11 +49,12 @@ namespace MetricsManager.DAL.Repositories
 
             return connection.Query<HddMetrics>(
                 "SELECT * FROM hddmetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
-                (
-                    agentId: period.AgentId,
-                    fromTime: period.FromTime,
-                    toTime: period.ToTime
-                )).ToList();
+                new
+                {
+                    agentId = period.AgentId,
+                    fromTime = period.FromTime,
+                    toTime = period.ToTime
+                }).ToList();
         }
 
         public DateTimeOffset GetLastDate(int agentId)

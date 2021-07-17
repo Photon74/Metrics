@@ -11,13 +11,6 @@ namespace MetricsManager.Mapper
     {
         public MapperProfile()
         {
-            CreateMap<CpuMetric, CpuMetrics>()
-                .ForMember(a => a.AgentId, opt => opt.Ignore());
-            CreateMap<Agent, CpuMetrics>()
-                .ForMember(a => a.Id, opt => opt.Ignore())
-                .ForMember(a => a.Value, opt => opt.Ignore())
-                .ForMember(a => a.Time, opt => opt.Ignore());
-
             CreateMap<AgentInfo, Agent>();
             CreateMap<Agent, AgentInfo>();
             CreateMap<DotNetMetrics, DotNetMetricDto>();

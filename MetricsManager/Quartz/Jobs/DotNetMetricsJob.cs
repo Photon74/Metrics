@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace MetricsManager.Quartz.Jobs
 {
+    [DisallowConcurrentExecution]
     public class DotNetMetricsJob : IJob
     {
         private readonly IDotNetMetricsRepository _metricsRepository;
@@ -47,7 +48,12 @@ namespace MetricsManager.Quartz.Jobs
 
                 foreach (var metric in metrics.Metrics)
                 {
-                    _metricsRepository.Create(_mapper.Map<DotNetMetrics>(metric));
+                    _metricsRepository.Create(new DotNetMetrics
+                    {
+                        Value = metric.Value,
+                        Time = metric.Time.ToUnixTimeSeconds(),
+                        AgentId = agent.AgentId
+                    });
                 }
             }
             return Task.CompletedTask;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MetricsManager.Client.Responses
 {
-    public class DotNetMetricsResponse
+    public class DotNetMetricsApiResponse
     {
         public List<DotNetMetricDto> Metrics { get; set; }
     }

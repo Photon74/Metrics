@@ -7,6 +7,6 @@ namespace MetricsManager.Client.Responses
 {
     public class CpuMetricsApiResponse
     {
-        public List<CpuMetric> Metrics { get; set; }
+        public List<CpuMetricDto> Metrics { get; set; }
     }
 }
