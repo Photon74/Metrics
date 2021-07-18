@@ -40,8 +40,7 @@ namespace MetricsManager.DAL.Repositories
         public IList<Agent> GetAllAgents()
         {
             using var connection = _connection.CreateOpenedConnection();
-            var res = connection.Query<Agent>("SELECT AgentId, AgentUrl, Enabled FROM agents").ToList();
-            return res;
+            return connection.Query<Agent>("SELECT AgentId, AgentUrl, Enabled FROM agents").ToList();
         }
 
         public void RegisterAgent(Agent agent)

@@ -1,14 +1,6 @@
-﻿using AutoMapper;
-using MediatR;
-using MetricsManager.Client.Models;
-using MetricsManager.Client.Responses;
-using MetricsManager.DAL.Interfaces;
-using MetricsManager.DAL.Models;
+﻿using MediatR;
 using MetricsManager.Mediator.Requests;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace MetricsManager.Controllers
 {

@@ -59,8 +59,7 @@ namespace MetricsManager.Controllers
         {
             _logger.LogInformation($"Getting list of MetricsAgents");
 
-            var response = _agentRepository.GetAllAgents();
-            return Ok(response);
+            return Ok(_agentRepository.GetAllAgents());
         }
 
         [HttpPut("delete/{agentId}")]
