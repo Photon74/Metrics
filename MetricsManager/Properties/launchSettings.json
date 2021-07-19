@@ -5,13 +5,14 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:56593",
-      "sslPort": 44385
+      "sslPort": 0
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchUrl": "api/metrics/cpu",
+      "launchBrowser": true,
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -19,7 +20,7 @@
     "MetricsManager": {
       "commandName": "Project",
       "launchUrl": "api/metrics/cpu",
-      "applicationUrl": "https://localhost:5003;http://localhost:5002",
+      "applicationUrl": "https://localhost:5003",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

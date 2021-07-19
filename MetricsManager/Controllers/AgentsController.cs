@@ -25,7 +25,13 @@ namespace MetricsManager.Controllers
             _logger = logger;
             _logger.LogDebug(1, "NLog is built in AgentsController");
         }
-
+        /// <summary>
+        /// Регистрация Агента сбора метрик
+        /// </summary>
+        /// <param name="AgentId">Идентификатор агента</param>
+        /// <param name="AgentUrl">Сетевой адрес агента</param>
+        /// <param name="Enabled">Активность агента</param>
+        /// <returns></returns>
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
@@ -33,7 +39,7 @@ namespace MetricsManager.Controllers
 
             _agentRepository.RegisterAgent(_mapper.Map<Agent>(agentInfo));
 
-            return Ok();
+            return Ok($"{agentInfo.AgentId}, {agentInfo.AgentUrl}, {agentInfo.Enabled}");
         }
 
         [HttpPut("enable/{agentId}")]

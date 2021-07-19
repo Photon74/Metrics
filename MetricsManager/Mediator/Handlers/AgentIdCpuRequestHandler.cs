@@ -30,7 +30,7 @@ namespace MetricsManager.Mediator.Handlers
         public Task<CpuMetricsResponse> Handle(AgentIdTimePeriodCpuRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Geting Cpu Metrics: " +
-                $"from MetricsAgent - {request.AgentId} " +
+                $"from MetricsAgent - {request.agentId} " +
                 $"from - {request.FromTime}, " +
                 $"to - {request.ToTime}");
 

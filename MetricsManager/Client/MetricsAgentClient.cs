@@ -24,11 +24,11 @@ namespace MetricsManager.Client
 
         public CpuMetricsApiResponse GetCpuMetrics(CpuMetricsApiRequest request)
         {
-            var fromTime = request.FromTime.ToString("O");
-            var toTime = request.ToTime.ToString("O");
+            var FromTime = request.FromTime.ToString("O");
+            var ToTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}api/metrics/cpu/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/cpu/from/{FromTime}/to/{ToTime}");
 
             try
             {
@@ -49,11 +49,11 @@ namespace MetricsManager.Client
 
         public DotNetMetricsApiResponse GetDotNetMetrics(DotNetMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToString("O");
-            var toTime = request.ToTime.ToString("O");
+            var FromTime = request.FromTime.ToString("O");
+            var ToTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}api/metrics/dotnet/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/dotnet/from/{FromTime}/to/{ToTime}");
 
             try
             {
@@ -75,11 +75,11 @@ namespace MetricsManager.Client
 
         public HddMetricsApiResponse GetHddMetrics(HddMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToString("O");
-            var toTime = request.ToTime.ToString("O");
+            var FromTime = request.FromTime.ToString("O");
+            var ToTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}api/metrics/hdd/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/hdd/from/{FromTime}/to/{ToTime}");
 
             try
             {
@@ -100,11 +100,11 @@ namespace MetricsManager.Client
 
         public NetworkMetricsApiResponse GetNetworkMetrics(NetworkMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToString("O");
-            var toTime = request.ToTime.ToString("O");
+            var FromTime = request.FromTime.ToString("O");
+            var ToTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}api/metrics/network/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/network/from/{FromTime}/to/{ToTime}");
 
             try
             {
@@ -125,11 +125,11 @@ namespace MetricsManager.Client
 
         public RamMetricsApiResponse GetRamMetrics(RamMetricsRequest request)
         {
-            var fromTime = request.FromTime.ToString("O");
-            var toTime = request.ToTime.ToString("O");
+            var FromTime = request.FromTime.ToString("O");
+            var ToTime = request.ToTime.ToString("O");
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUrl}api/metrics/ram/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUrl}api/metrics/ram/from/{FromTime}/to/{ToTime}");
 
             try
             {

@@ -35,11 +35,11 @@ namespace MetricsManager.DAL.Repositories
             using var connection = _connection.CreateOpenedConnection();
 
             return connection.Query<HddMetrics>(
-                "SELECT * FROM hddmetrics WHERE time BETWEEN @fromTime AND @toTime",
+                "SELECT * FROM hddmetrics WHERE time BETWEEN @FromTime AND @ToTime",
                 new
                 {
-                    fromTime = period.FromTime.ToUnixTimeSeconds(),
-                    toTime = period.ToTime.ToUnixTimeSeconds()
+                    FromTime = period.FromTime.ToUnixTimeSeconds(),
+                    ToTime = period.ToTime.ToUnixTimeSeconds()
                 }).ToList();
         }
 
@@ -48,12 +48,12 @@ namespace MetricsManager.DAL.Repositories
             using var connection = _connection.CreateOpenedConnection();
 
             return connection.Query<HddMetrics>(
-                "SELECT * FROM hddmetrics WHERE agentId = @agentId AND time BETWEEN @fromTime AND @toTime",
+                "SELECT * FROM hddmetrics WHERE agentId = @agentId AND time BETWEEN @FromTime AND @ToTime",
                 new
                 {
                     agentId = period.AgentId,
-                    fromTime = period.FromTime.ToUnixTimeSeconds(),
-                    toTime = period.ToTime.ToUnixTimeSeconds()
+                    FromTime = period.FromTime.ToUnixTimeSeconds(),
+                    ToTime = period.ToTime.ToUnixTimeSeconds()
                 }).ToList();
         }
 

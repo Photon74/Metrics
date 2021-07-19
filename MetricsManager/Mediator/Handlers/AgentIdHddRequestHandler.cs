@@ -30,7 +30,7 @@ namespace MetricsManager.Mediator.Handlers
         public Task<HddMetricsResponse> Handle(AgentIdTimePeriodHddRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Geting Hdd Metrics: " +
-                $"from MetricsAgent - {request.AgentId} " +
+                $"from MetricsAgent - {request.agentId} " +
                 $"from - {request.FromTime}, " +
                 $"to - {request.ToTime}");
 

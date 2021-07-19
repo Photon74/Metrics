@@ -16,13 +16,13 @@ namespace MetricsManager.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        [HttpGet("agent/{agentId}/from/{FromTime}/to/{ToTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] AgentIdTimePeriodHddRequest request)
         {
             return Ok(_mediator.Send(request).Result);
         }
 
-        [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
+        [HttpGet("cluster/from/{FromTime}/to/{ToTime}")]
         public IActionResult GetMetricsFromAllCluster([FromRoute] TimePeriodHddRequest request)
         {
             return Ok(_mediator.Send(request).Result);

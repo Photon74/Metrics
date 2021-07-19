@@ -36,13 +36,13 @@ namespace MetricsManager.Quartz.Jobs
             var agents = _agentRepository.GetAllAgents();
             foreach (var agent in agents)
             {
-                var fromTime = _metricsRepository.GetLastDate(agent.AgentId);
-                var toTime = DateTimeOffset.UtcNow;
+                var FromTime = _metricsRepository.GetLastDate(agent.AgentId);
+                var ToTime = DateTimeOffset.UtcNow;
 
                 var metrics = _client.GetCpuMetrics(new CpuMetricsApiRequest
                 {
-                    FromTime = fromTime,
-                    ToTime = toTime,
+                    FromTime = FromTime,
+                    ToTime = ToTime,
                     AgentUrl = new Uri(agent.AgentUrl)
                 });
 

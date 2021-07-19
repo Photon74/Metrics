@@ -6,7 +6,13 @@ namespace MetricsManager.Mediator.Requests
 {
     public class TimePeriodHddRequest : IRequest<HddMetricsResponse>
     {
-        public DateTimeOffset FromTime { get; set; }
-        public DateTimeOffset ToTime { get; set; }
+        public DateTimeOffset FromTime
+        {
+            get; set;
+        }
+        public DateTimeOffset ToTime
+        {
+            get; set;
+        }
     }
 }

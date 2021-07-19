@@ -30,7 +30,7 @@ namespace MetricsManager.Mediator.Handlers
         public Task<NetworkMetricsResponse> Handle(AgentIdTimePeriodNetworkRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Geting Network Metrics: " +
-                $"from MetricsAgent - {request.AgentId} " +
+                $"from MetricsAgent - {request.agentId} " +
                 $"from - {request.FromTime}, " +
                 $"to - {request.ToTime}");
 

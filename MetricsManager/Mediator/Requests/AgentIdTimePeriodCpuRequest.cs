@@ -6,7 +6,7 @@ namespace MetricsManager.Mediator.Requests
 {
     public class AgentIdTimePeriodCpuRequest : IRequest<CpuMetricsResponse>
 	{
-		public int AgentId { get; set; }
+		public int agentId { get; set; }
 		public DateTimeOffset FromTime { get; set; }
 		public DateTimeOffset ToTime { get; set; }
 	}
