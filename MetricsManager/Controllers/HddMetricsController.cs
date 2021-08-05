@@ -2,6 +2,7 @@
 using MetricsManager.DAL.Models;
 using MetricsManager.Mediator.Requests;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace MetricsManager.Controllers
 {
@@ -17,15 +18,15 @@ namespace MetricsManager.Controllers
         }
 
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent([FromRoute] AgentIdTimePeriodHddRequest request)
+        public async Task<IActionResult> GetMetricsFromAgent([FromRoute] AgentIdTimePeriodHddRequest request)
         {
-            return Ok(_mediator.Send(request).Result);
+            return Ok(await _mediator.Send(request));
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster([FromRoute] TimePeriodHddRequest request)
+        public async Task<IActionResult> GetMetricsFromAllCluster([FromRoute] TimePeriodHddRequest request)
         {
-            return Ok(_mediator.Send(request).Result);
+            return Ok(await _mediator.Send(request));
         }
     }
 }
