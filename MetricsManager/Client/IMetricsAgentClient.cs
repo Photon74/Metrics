@@ -2,15 +2,16 @@
 using MetricsManager.Client.Responses;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MetricsManager.Client
 {
     public interface IMetricsAgentClient
     {
-        CpuMetricsApiResponse GetCpuMetrics(CpuMetricsApiRequest request);
-        RamMetricsApiResponse GetRamMetrics(RamMetricsRequest request);
-        HddMetricsApiResponse GetHddMetrics(HddMetricsRequest request);
-        DotNetMetricsApiResponse GetDotNetMetrics(DotNetMetricsRequest request);
-        NetworkMetricsApiResponse GetNetworkMetrics(NetworkMetricsRequest request);
+        Task<CpuMetricsApiResponse> GetCpuMetrics(CpuMetricsApiRequest request);
+        Task<RamMetricsApiResponse> GetRamMetrics(RamMetricsRequest request);
+        Task<HddMetricsApiResponse> GetHddMetrics(HddMetricsRequest request);
+        Task<DotNetMetricsApiResponse> GetDotNetMetrics(DotNetMetricsRequest request);
+        Task<NetworkMetricsApiResponse> GetNetworkMetrics(NetworkMetricsRequest request);
     }
 }
