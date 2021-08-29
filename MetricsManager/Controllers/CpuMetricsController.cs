@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using MetricsManager.Mediator.Requests;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MetricsManager.Controllers
@@ -11,21 +9,23 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class CpuMetricsController : ControllerBase
     {
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent(
-            [FromRoute] int agentId,
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        private readonly IMediator _mediator;
+
+        public CpuMetricsController(IMediator mediator)
         {
-            return Ok();
+            _mediator = mediator;
+        }
+
+        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        public async Task<IActionResult> GetMetricsFromAgent([FromRoute] AgentIdTimePeriodCpuRequest request)
+        {
+            return Ok(await _mediator.Send(request));
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        public async Task<IActionResult> GetMetricsFromAllCluster([FromRoute] TimePeriodCpuRequest request)
         {
-            return Ok();
+            return Ok(await _mediator.Send(request));
         }
     }
 }

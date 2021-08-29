@@ -1,41 +1,73 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using MetricsManager.Controllers.Models;
+using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace MetricsManager.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/agents")]
     [ApiController]
     public class AgentsController : ControllerBase
     {
-        public AgentsController()
+        private readonly ILogger<AgentsController> _logger;
+        private readonly IAgentRepository _agentRepository;
+        private readonly IMapper _mapper;
+        public AgentsController(IAgentRepository agentRepository,
+                                IMapper mapper,
+                                ILogger<AgentsController> logger)
         {
+            _agentRepository = agentRepository;
+            _mapper = mapper;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog is built in AgentsController");
         }
 
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
+            _logger.LogInformation($"Register MetricsAgent - {agentInfo.AgentId}, Url - {agentInfo.AgentUrl}");
+
+            _agentRepository.RegisterAgent(_mapper.Map<Agent>(agentInfo));
+
             return Ok();
         }
 
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
+            _logger.LogInformation($"Enabled MetricsAgent - {agentId}");
+
+            _agentRepository.EnableAgent(agentId);
             return Ok();
         }
 
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
+            _logger.LogInformation($"Disabled MetricsAgent - {agentId}");
+
+            _agentRepository.DisableAgent(agentId);
             return Ok();
         }
 
         [HttpGet("get")]
         public IActionResult GetAgentsList()
         {
+            _logger.LogInformation($"Getting list of MetricsAgents");
+
+            return Ok(_agentRepository.GetAllAgents());
+        }
+
+        [HttpPut("delete/{agentId}")]
+        public IActionResult DeleteAgentById([FromRoute] int agentId)
+        {
+            _logger.LogInformation($"Deleted MetricsAgent - {agentId}");
+
+            _agentRepository.RemoveAgent(agentId);
             return Ok();
         }
     }
