@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using MetricsManager.DAL.Models;
+using MetricsManager.Mediator.Requests;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsManager.Controllers
 {
@@ -11,21 +9,23 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class HddMetricsController : ControllerBase
     {
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent(
-            [FromRoute] int agentId,
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        private readonly IMediator _mediator;
+
+        public HddMetricsController(IMediator mediator)
         {
-            return Ok();
+            _mediator = mediator;
         }
 
-        [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        [HttpGet("agent/{agentId}/from/{FromTime}/to/{ToTime}")]
+        public IActionResult GetMetricsFromAgent([FromRoute] AgentIdTimePeriodHddRequest request)
         {
-            return Ok();
+            return Ok(_mediator.Send(request).Result);
+        }
+
+        [HttpGet("cluster/from/{FromTime}/to/{ToTime}")]
+        public IActionResult GetMetricsFromAllCluster([FromRoute] TimePeriodHddRequest request)
+        {
+            return Ok(_mediator.Send(request).Result);
         }
     }
 }

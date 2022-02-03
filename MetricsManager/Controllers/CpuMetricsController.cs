@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using MetricsManager.Mediator.Requests;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsManager.Controllers
 {
@@ -11,21 +8,36 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class CpuMetricsController : ControllerBase
     {
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent(
-            [FromRoute] int agentId,
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        private readonly IMediator _mediator;
+
+        public CpuMetricsController(IMediator mediator)
         {
-            return Ok();
+            _mediator = mediator;
         }
 
-        [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        [HttpGet("agent/{agentId}/from/{FromTime}/to/{ToTime}")]
+        public IActionResult GetMetricsFromAgent([FromRoute] AgentIdTimePeriodCpuRequest request)
         {
-            return Ok();
+            return Ok(_mediator.Send(request).Result);
+        }
+        /// <summary>
+        /// Получает метрики CPU на заданном диапазоне времени
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     GET cpumetrics/from/1/to/9999999999
+        ///
+        /// </remarks>
+        /// <param name="FromTime">начальная метрка времени в секундах с 01.01.1970</param>
+        /// <param name="ToTime">конечная метрка времени в секундах с 01.01.1970</param>
+        /// <returns>Список метрик, которые были сохранены в заданном диапазоне времени</returns>
+        /// <response code="200">Если все хорошо</response>
+        /// <response code="400">Если передали неправильные параметры</response>
+        [HttpGet("cluster/from/{FromTime}/to/{ToTime}")]
+        public IActionResult GetMetricsFromAllCluster([FromRoute] TimePeriodCpuRequest request)
+        {
+            return Ok(_mediator.Send(request).Result);
         }
     }
 }

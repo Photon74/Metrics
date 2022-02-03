@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MetricsAgent.Controllers;
-using MetricsAgent.Controllers.Requests;
 using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.Mediator;
+using MetricsAgent.Mediator.Requests;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
