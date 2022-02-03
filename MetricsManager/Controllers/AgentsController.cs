@@ -42,6 +42,7 @@ namespace MetricsManager.Controllers
             return Ok($"{agentInfo.AgentId}, {agentInfo.AgentUrl}, {agentInfo.Enabled}");
         }
 
+
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
@@ -50,6 +51,7 @@ namespace MetricsManager.Controllers
             _agentRepository.EnableAgent(agentId);
             return Ok();
         }
+
 
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
@@ -60,6 +62,7 @@ namespace MetricsManager.Controllers
             return Ok();
         }
 
+
         [HttpGet("get")]
         public IActionResult GetAgentsList()
         {
@@ -67,6 +70,7 @@ namespace MetricsManager.Controllers
 
             return Ok(_agentRepository.GetAllAgents());
         }
+
 
         [HttpPut("delete/{agentId}")]
         public IActionResult DeleteAgentById([FromRoute] int agentId)
