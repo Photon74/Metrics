@@ -2,12 +2,9 @@
 using MetricsManager.Client.Responses;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Reflection.PortableExecutable;
-using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace MetricsManager.Client
 {
@@ -22,7 +19,7 @@ namespace MetricsManager.Client
             _logger = logger;
         }
 
-        public CpuMetricsApiResponse GetCpuMetrics(CpuMetricsApiRequest request)
+        public async Task<CpuMetricsApiResponse> GetCpuMetrics(CpuMetricsApiRequest request)
         {
             var FromTime = request.FromTime.ToString("O");
             var ToTime = request.ToTime.ToString("O");
@@ -33,12 +30,16 @@ namespace MetricsManager.Client
             try
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
-                using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
+                await using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<CpuMetricsApiResponse>(responseStream, options).Result;
+                var value = JsonSerializer.DeserializeAsync<CpuMetricsApiResponse>(responseStream, options);
+                if (value.IsCompleted)
+                {
+                    return value.Result;
+                }
             }
             catch (Exception ex)
             {
@@ -47,7 +48,7 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public DotNetMetricsApiResponse GetDotNetMetrics(DotNetMetricsRequest request)
+        public async Task<DotNetMetricsApiResponse> GetDotNetMetrics(DotNetMetricsRequest request)
         {
             var FromTime = request.FromTime.ToString("O");
             var ToTime = request.ToTime.ToString("O");
@@ -58,13 +59,16 @@ namespace MetricsManager.Client
             try
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
-                using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
+                await using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                var res = JsonSerializer.DeserializeAsync<DotNetMetricsApiResponse>(responseStream, options).Result;
-                return res;
+                var value = JsonSerializer.DeserializeAsync<DotNetMetricsApiResponse>(responseStream, options);
+                if (value.IsCompleted)
+                {
+                    return value.Result;
+                }
             }
             catch (Exception ex)
             {
@@ -73,7 +77,7 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public HddMetricsApiResponse GetHddMetrics(HddMetricsRequest request)
+        public async Task<HddMetricsApiResponse> GetHddMetrics(HddMetricsRequest request)
         {
             var FromTime = request.FromTime.ToString("O");
             var ToTime = request.ToTime.ToString("O");
@@ -84,12 +88,16 @@ namespace MetricsManager.Client
             try
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
-                using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
+                await using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<HddMetricsApiResponse>(responseStream, options).Result;
+                var value = JsonSerializer.DeserializeAsync<HddMetricsApiResponse>(responseStream, options);
+                if (value.IsCompleted)
+                {
+                    return value.Result;
+                }
             }
             catch (Exception ex)
             {
@@ -98,7 +106,7 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public NetworkMetricsApiResponse GetNetworkMetrics(NetworkMetricsRequest request)
+        public async Task<NetworkMetricsApiResponse> GetNetworkMetrics(NetworkMetricsRequest request)
         {
             var FromTime = request.FromTime.ToString("O");
             var ToTime = request.ToTime.ToString("O");
@@ -109,12 +117,16 @@ namespace MetricsManager.Client
             try
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
-                using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
+                await using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<NetworkMetricsApiResponse>(responseStream, options).Result;
+                var value = JsonSerializer.DeserializeAsync<NetworkMetricsApiResponse>(responseStream, options);
+                if (value.IsCompleted)
+                {
+                    return value.Result;
+                }
             }
             catch (Exception ex)
             {
@@ -123,7 +135,7 @@ namespace MetricsManager.Client
             return null;
         }
 
-        public RamMetricsApiResponse GetRamMetrics(RamMetricsRequest request)
+        public async Task<RamMetricsApiResponse> GetRamMetrics(RamMetricsRequest request)
         {
             var FromTime = request.FromTime.ToString("O");
             var ToTime = request.ToTime.ToString("O");
@@ -134,12 +146,16 @@ namespace MetricsManager.Client
             try
             {
                 HttpResponseMessage responseMessage = _httpClient.SendAsync(httpRequest).Result;
-                using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
+                await using var responseStream = responseMessage.Content.ReadAsStreamAsync().Result;
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                return JsonSerializer.DeserializeAsync<RamMetricsApiResponse>(responseStream, options).Result;
+                var value = JsonSerializer.DeserializeAsync<RamMetricsApiResponse>(responseStream, options);
+                if (value.IsCompleted)
+                {
+                    return value.Result;
+                }
             }
             catch (Exception ex)
             {

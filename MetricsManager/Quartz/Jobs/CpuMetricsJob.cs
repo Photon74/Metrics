@@ -31,7 +31,7 @@ namespace MetricsManager.Quartz.Jobs
             SqlMapper.AddTypeHandler(new UriHandler());
         }
 
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
             var agents = _agentRepository.GetAllAgents();
             foreach (var agent in agents)
@@ -39,7 +39,7 @@ namespace MetricsManager.Quartz.Jobs
                 var FromTime = _metricsRepository.GetLastDate(agent.AgentId);
                 var ToTime = DateTimeOffset.UtcNow;
 
-                var metrics = _client.GetCpuMetrics(new CpuMetricsApiRequest
+                var metrics = await _client.GetCpuMetrics(new CpuMetricsApiRequest
                 {
                     FromTime = FromTime,
                     ToTime = ToTime,
@@ -59,7 +59,6 @@ namespace MetricsManager.Quartz.Jobs
                     }
                 }
             }
-            return Task.CompletedTask;
         }
     }
 }
